@@ -1,0 +1,57 @@
+{
+  "name": "postscript",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@analogjs/platform:vite",
+      "defaultConfiguration": "production",
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "sourcemap": false,
+          "mode": "production"
+        }
+      },
+      "outputs": [
+        "{options.outputPath}",
+        "{workspaceRoot}/dist/postscript/.nitro",
+        "{workspaceRoot}/dist/postscript/ssr",
+        "{workspaceRoot}/dist/postscript/analog"
+      ],
+      "options": {
+        "main": "postscript/src/main.ts",
+        "configFile": "postscript/vite.config.ts",
+        "outputPath": "dist/postscript/client",
+        "tsConfig": "postscript/tsconfig.app.json"
+      }
+    },
+    "serve": {
+      "executor": "@analogjs/platform:vite-dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "postscript:build",
+        "port": 4200
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "postscript:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "postscript:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@analogjs/vitest-angular:test",
+      "outputs": [
+        "{projectRoot}/coverage"
+      ]
+    }
+  },
+  "tags": [],
+  "sourceRoot": "./postscript/src"
+}
