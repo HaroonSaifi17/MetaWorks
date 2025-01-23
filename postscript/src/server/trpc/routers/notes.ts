@@ -1,9 +1,8 @@
 import { z } from 'zod';
 import { publicProcedure, router } from '../trpc';
-import { Note } from '../../../note';
+import { db, notes } from '../../../db';
+import { eq } from 'drizzle-orm';
 
-let noteId = 0;
-const notes: Note[] = [];
 export const noteRouter = router({
   create: publicProcedure
     .input(
@@ -11,22 +10,18 @@ export const noteRouter = router({
         note: z.string(),
       })
     )
-    .mutation(({ input }) =>
-      notes.push({
-        id: noteId++,
-        note: input.note,
-        createdAt: new Date().toISOString(),
-      })
+    .mutation(
+      async ({ input }) => await db.insert(notes).values({ note: input.note }).returning()
     ),
-  list: publicProcedure.query(() => notes),
+  list: publicProcedure.query(async () => {
+    const selectedNotes = await db.select().from(notes);
+    return selectedNotes.map((note) => ({ ...note, id: +note.id }));
+  }),
   remove: publicProcedure
     .input(
       z.object({
         id: z.number(),
       })
     )
-    .mutation(({ input }) => {
-      const index = notes.findIndex((note) => input.id === note.id);
-      notes.splice(index, 1);
-    }),
+    .mutation(async ({ input }) => await db.delete(notes).where(eq(notes.id, input.id)).returning()),
 });
