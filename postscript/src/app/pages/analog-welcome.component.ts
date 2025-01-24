@@ -1,18 +1,18 @@
-import { Component } from "@angular/core";
-import { AsyncPipe, DatePipe, NgFor, NgIf } from "@angular/common";
-import { FormsModule, NgForm } from "@angular/forms";
-import { map, shareReplay, Subject, switchMap, take } from "rxjs";
-import { waitFor } from "@analogjs/trpc";
-import { injectTrpcClient } from "../../trpc-client";
-import { Note } from "../../db";
+import { Component } from '@angular/core';
+import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
+import { FormsModule, NgForm } from '@angular/forms';
+import { map, shareReplay, Subject, switchMap, take } from 'rxjs';
+import { waitFor } from '@analogjs/trpc';
+import { injectTrpcClient } from '../../trpc-client';
+import { Note } from '../../db';
 
 @Component({
-  selector: "postscript-analog-welcome",
+  selector: 'postscript-analog-welcome',
 
   imports: [AsyncPipe, FormsModule, NgFor, DatePipe, NgIf],
   host: {
     class:
-      "flex min-h-screen flex-col text-zinc-900 bg-zinc-50 px-4 pt-8 pb-32",
+      'flex min-h-screen flex-col text-zinc-900 bg-zinc-50 px-4 pt-8 pb-32',
   },
   template: `
     <main class="flex-1 mx-auto">
@@ -128,15 +128,15 @@ export class AnalogWelcomeComponent {
   public notes$ = this.triggerRefresh$.pipe(
     switchMap(() => this._trpc.note.list.query()), // Fetch the notes
     map((notes) =>
-      notes.map((note ) => ({
+      notes.map((note) => ({
         ...note,
         createdAt: new Date(note.createdAt), // Convert createdAt to Date
-      })),
+      }))
     ),
-    shareReplay(1), // Cache the latest value for all subscribers
+    shareReplay(1) // Cache the latest value for all subscribers
   );
 
-  public newNote = "";
+  public newNote = '';
 
   constructor() {
     void waitFor(this.notes$);
@@ -156,7 +156,7 @@ export class AnalogWelcomeComponent {
       .mutate({ note: this.newNote })
       .pipe(take(1))
       .subscribe(() => this.triggerRefresh$.next());
-    this.newNote = "";
+    this.newNote = '';
     form.form.reset();
   }
 
