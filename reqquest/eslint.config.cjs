@@ -30,7 +30,7 @@ module.exports = [
                 "error",
                 {
                     type: "attribute",
-                    prefix: "Postscript",
+                    prefix: "ReqQuest",
                     style: "camelCase"
                 }
             ],
@@ -38,7 +38,7 @@ module.exports = [
                 "error",
                 {
                     type: "element",
-                    prefix: "postscript",
+                    prefix: "reqquest",
                     style: "kebab-case"
                 }
             ]

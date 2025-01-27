@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
     },
     
     build: {
-      outDir: '../dist/./postscript/client',
+      outDir: '../dist/./reqquest/client',
       reportCompressedSize: true,    
       target: ['es2020'],
     },

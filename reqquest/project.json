@@ -1,5 +1,5 @@
 {
-  "name": "postscript",
+  "name": "reqquest",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "targets": {
@@ -17,31 +17,31 @@
       },
       "outputs": [
         "{options.outputPath}",
-        "{workspaceRoot}/dist/postscript/.nitro",
-        "{workspaceRoot}/dist/postscript/ssr",
-        "{workspaceRoot}/dist/postscript/analog"
+        "{workspaceRoot}/dist/reqquest/.nitro",
+        "{workspaceRoot}/dist/reqquest/ssr",
+        "{workspaceRoot}/dist/reqquest/analog"
       ],
       "options": {
-        "main": "postscript/src/main.ts",
-        "configFile": "postscript/vite.config.ts",
-        "outputPath": "dist/postscript/client",
-        "tsConfig": "postscript/tsconfig.app.json"
+        "main": "reqquest/src/main.ts",
+        "configFile": "reqquest/vite.config.ts",
+        "outputPath": "dist/reqquest/client",
+        "tsConfig": "reqquest/tsconfig.app.json"
       }
     },
     "serve": {
       "executor": "@analogjs/platform:vite-dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "postscript:build",
+        "buildTarget": "reqquest:build",
         "port": 4200
       },
       "configurations": {
         "development": {
-          "buildTarget": "postscript:build:development",
+          "buildTarget": "reqquest:build:development",
           "hmr": true
         },
         "production": {
-          "buildTarget": "postscript:build:production"
+          "buildTarget": "reqquest:build:production"
         }
       }
     },
@@ -53,5 +53,5 @@
     }
   },
   "tags": [],
-  "sourceRoot": "./postscript/src"
+  "sourceRoot": "./reqquest/src"
 }
