@@ -1,0 +1,19 @@
+<hlm-dialog-content class="sm:max-w-[425px]" *brnDialogContent="let ctx">
+  <hlm-dialog-header class="border-secondary border-b pb-4">
+    <h3 hlmDialogTitle class="text-center">Login to ReqQuest</h3>
+  </hlm-dialog-header>
+  <div class="w-96 [&>button]:justify-start [&>button]:gap-2 [&>button]:font-semibold flex flex-col gap-1 pt-1">
+    <button variant="ghost" (click)="login()" hlmBtn>
+      <ng-icon hlm name="ionLogoGoogle" />
+      Continue with Google
+    </button>
+    <button variant="ghost" hlmBtn>
+      <ng-icon hlm name="ionLogoGithub" />
+      Continue with GitHub
+    </button>
+    <button variant="ghost" hlmBtn>
+      <ng-icon hlm name="ionMail" />
+      Continue with Email
+    </button>
+  </div>
+</hlm-dialog-content>

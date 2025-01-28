@@ -1,24 +1,45 @@
 <section
-  class="flex max-w-screen-2xl mx-auto justify-between items-center p-2 [&>div]:gap-2 [&>div]:flex [&>div>*]:text-xs [&>div>button]:h-8">
-  <div>
-    <a hlmBtn variant="link" class="uppercase font-semibold cursor-pointer">ReqQuest</a>
+  class="flex max-w-screen-2xl mx-auto justify-between items-center p-2 border-b border-secondary [&>div]:gap-2 [&>div]:flex [&>div>*]:text-xs [&>div>*]:font-semibold [&>div>button]:h-8"
+>
+  <div class="flex-1">
+    <a hlmBtn variant="link" class="uppercase font-semibold cursor-pointer"
+      >ReqQuest</a
+    >
   </div>
-  <div>
-    <button class="gap-2 w-60 min-w-10 justify-between" type="menu" hlmBtn variant="outline" size="sm">
-      <div>
+  <div class="flex-shrink">
+    <button
+      class="gap-2 w-[25vw] overflow-hidden max-w-60 max-sm:w-[40vw] min-w-10 justify-between"
+      type="menu"
+      hlmBtn
+      variant="outline"
+      size="sm"
+    >
+      <div class="items-center flex gap-1">
         <ng-icon hlm size="xs" name="lucideSearch" />
         Search
       </div>
       <div
-        class="gap-1 flex [&>span]:border-muted [&>span]:border [&>span]:bg-background [&>span]:rounded-sm [&>span]:px-1">
+        class="gap-1 font-normal flex [&>span]:border-muted [&>span]:border [&>span]:bg-background [&>span]:rounded-sm [&>span]:px-1"
+      >
         <span> Ctl </span>
         <span>K</span>
       </div>
     </button>
   </div>
-  <div>
-    <button size="sm" class="gap-2" hlmBtn>
+  <hlm-dialog
+    class="gap-2 [&>button]:font-semibold flex flex-1 justify-end [&>*]:text-xs [&>button]:h-8"
+  >
+    <button
+      size="sm"
+      brnDialogTrigger
+      class="gap-2 text-nowrap max-sm:hidden"
+      hlmBtn
+    >
       <ng-icon hlm size="sm" name="heroCloudArrowUp" />
-      Save My Workspace</button><button hlmBtn size="sm" variant="secondary">Login</button>
-  </div>
+      Save My Workspace</button
+    ><button brnDialogTrigger hlmBtn size="sm" variant="secondary">
+      Login
+    </button>
+    <reqquest-login></reqquest-login>
+  </hlm-dialog>
 </section>
