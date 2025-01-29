@@ -1,46 +1,75 @@
-<hlm-dialog-content class="sm:max-w-[425px]" *brnDialogContent="let ctx">
+<hlm-dialog-content *brnDialogContent="let ctx">
   <hlm-dialog-header class="border-secondary border-b pb-4">
     <h3 hlmDialogTitle class="text-center">Login to ReqQuest</h3>
   </hlm-dialog-header>
-  <div class="w-96 [&>button]:justify-start [&>button]:gap-2 [&>button]:font-semibold flex flex-col gap-1 pt-1">
-    @if (!formTrigger()){
-    <button variant="ghost" (click)="supabase.signInWithProvider('google')" hlmBtn>
-      <ng-icon hlm name="ionLogoGoogle" />
-      Continue with Google
+
+  <div
+    class="max-w-[425px] w-[80vw] [&>button]:justify-start [&>button]:gap-2 [&>button]:font-semibold flex flex-col gap-1 pt-1">
+    @if (!formTrigger()) { @for (provider of providers; track provider.id) {
+    <button variant="ghost" (click)="authService.signInWithProvider(provider.id)" hlmBtn
+      [attr.aria-label]="'Continue with ' + provider.name">
+      <ng-icon [name]="provider.icon" hlm />
+      Continue with {{ provider.name }}
     </button>
-    <button variant="ghost" (click)="supabase.signInWithProvider('github')" hlmBtn>
-      <ng-icon hlm name="ionLogoGithub" />
-      Continue with GitHub
-    </button>
-    <button variant="ghost" (click)="formTrigger.set(true)" hlmBtn>
+    }
+
+    <button variant="ghost" (click)="formTrigger.set(true)" hlmBtn aria-label="Continue with Email">
       <ng-icon hlm name="ionMail" />
       Continue with Email
     </button>
+
     <div
-      class="pt-4 mt-4 text-xs [&>a]:cursor-pointer [&>a:hover]:underline text-muted-foreground border-t border-secondary">
-      By signing in, you agree to our <a>Terms of Service</a> and
-      <a>Privacy Policy</a>.
+      class="pt-4 mt-4 text-xs [&>button]:cursor-pointer [&>button:hover]:underline text-muted-foreground border-t border-secondary">
+      By signing in, you agree to our
+      <button type="button" class="focus:outline-none">Terms of Service</button>
+      and
+      <button type="button" class="focus:outline-none">Privacy Policy</button>.
     </div>
-    } @else{
-    <form [formGroup]="form" (ngSubmit)="supabase.signInWithEmail(form.controls.email.value)"
-      class="flex flex-col gap-2">
+    } @else { @if (!authService.isSuccess()) {
+    <form [formGroup]="form" (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-2 [&>small]:text-red-600 [&>small]:text-xs [&>small]:font-normal">
       <label class="text-sm font-semibold" for="email">Email</label>
-      <input class="full bg-background border-secondary" hlmInput placeholder="example@reqquest.com" name="email"
-        type="email" />
-      @if( form.controls.email.invalid && (form.controls.email.touched ||
-      form.controls.email.dirty)){
-      @if(form.controls.email.errors?.['required']){
-      <small> Email is required </small>
-      } @if(form.controls.email.errors?.['email']){
-      <small> Email is invalid </small>
-      } }
-      <button variant="secondary" type="submit" hlmBtn>Send magic link</button>
+      <input class="full bg-background border-secondary" formControlName="email" hlmInput
+        placeholder="example@reqquest.com" id="email" type="email" aria-describedby="email-error" />
+
+      @if (showEmailError) {
+      <small id="email-error">
+        @if (form.controls.email.errors?.['required']) { *email is required }
+        @else if (form.controls.email.errors?.['email']) { *email is invalid }
+      </small>
+      }
+
+      <button type="submit" hlmBtn [disabled]="authService.isLoading()" aria-label="Send magic link">
+        @if (authService.isLoading()) {
+        <ng-icon name="lucideLoaderCircle" class="mr-2 animate-spin" hlm />
+        } Send magic link
+      </button>
+
       <div class="pt-2 mt-4 border-t border-secondary">
-        <a variant="link" class="cursor-pointer pl-0" (click)="formTrigger.set(false)" hlmBtn>
+        <button type="button" variant="link" class="cursor-pointer pl-0" (click)="formTrigger.set(false)" hlmBtn
+          aria-label="Back to sign-in options">
           <ng-icon hlm class="mr-2" size="sm" name="lucideArrowLeft" />
-          All sigin options</a>
+          All sign-in options
+        </button>
       </div>
     </form>
-    }
+    } @else {
+    <div class="flex flex-col justify-center gap-2 items-center">
+      <ng-icon hlm name="lucideInbox" class="text-blue-500" aria-hidden="true" />
+      <h2>We sent you a magic link</h2>
+      <p class="text-center font-normal">
+        Check your inbox - we sent an email to {{ email }}. It contains a magic
+        link to log you in.
+      </p>
+    </div>
+
+    <div class="pt-2 mt-4 border-t border-secondary flex justify-between">
+      <button type="button" variant="link" class="cursor-pointer pl-0" (click)="authService.isSuccess.set(false)" hlmBtn
+        aria-label="Re-enter email">
+        <ng-icon hlm class="mr-2" size="sm" name="lucideArrowLeft" />
+        Re-enter email
+      </button>
+    </div>
+    } }
   </div>
 </hlm-dialog-content>

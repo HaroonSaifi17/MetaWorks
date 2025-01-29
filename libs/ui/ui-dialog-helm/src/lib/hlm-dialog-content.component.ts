@@ -1,7 +1,7 @@
 import { NgComponentOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, inject, input } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideX, lucideArrowLeft } from '@ng-icons/lucide';
+import { lucideX, lucideArrowLeft, lucideLoaderCircle, lucideInbox } from '@ng-icons/lucide';
 import { hlm } from '@spartan-ng/brain/core';
 import { BrnDialogCloseDirective, BrnDialogRef, injectBrnDialogContext } from '@spartan-ng/brain/dialog';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
@@ -13,7 +13,7 @@ import { ionLogoGoogle, ionLogoGithub, ionMail } from '@ng-icons/ionicons';
 	selector: 'hlm-dialog-content',
 	standalone: true,
 	imports: [NgComponentOutlet, BrnDialogCloseDirective, HlmDialogCloseDirective, NgIcon, HlmIconDirective],
-	providers: [provideIcons({ lucideX, ionLogoGoogle, ionLogoGithub, ionMail,lucideArrowLeft})],
+	providers: [provideIcons({ lucideX, ionLogoGoogle, ionLogoGithub, ionMail,lucideArrowLeft, lucideLoaderCircle,lucideInbox})],
 	host: {
 		'[class]': '_computedClass()',
 		'[attr.data-state]': 'state()',

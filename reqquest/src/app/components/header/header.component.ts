@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -22,4 +22,6 @@ import { HlmDialogComponent } from '@spartan-ng/ui-dialog-helm';
   styleUrl: './header.component.css',
   providers: [provideIcons({ heroCloudArrowUp, lucideSearch })],
 })
-export class HeaderComponent {}
+export class HeaderComponent {
+  formTrigger = signal(false)
+}
