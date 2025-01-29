@@ -7,7 +7,7 @@
 html, body {
 display: block;
 height: 100%;
-  @apply bg-background
+  @apply bg-background font-semibold
 }
 
 :root {

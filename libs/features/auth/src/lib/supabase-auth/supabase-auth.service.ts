@@ -17,4 +17,10 @@ export class SupabaseAuthService {
       options: { redirectTo: window.location.origin },
     });
   }
+  async logout() {
+    return this.supabase.auth.signOut();
+  }
+  async signInWithEmail(email: string) {
+    return this.supabase.auth.signInWithOtp({ email });
+  }
 }

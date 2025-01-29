@@ -3,6 +3,7 @@
     <h3 hlmDialogTitle class="text-center">Login to ReqQuest</h3>
   </hlm-dialog-header>
   <div class="w-96 [&>button]:justify-start [&>button]:gap-2 [&>button]:font-semibold flex flex-col gap-1 pt-1">
+    @if (!formTrigger()){
     <button variant="ghost" (click)="supabase.signInWithProvider('google')" hlmBtn>
       <ng-icon hlm name="ionLogoGoogle" />
       Continue with Google
@@ -11,9 +12,35 @@
       <ng-icon hlm name="ionLogoGithub" />
       Continue with GitHub
     </button>
-    <button variant="ghost" hlmBtn>
+    <button variant="ghost" (click)="formTrigger.set(true)" hlmBtn>
       <ng-icon hlm name="ionMail" />
       Continue with Email
     </button>
+    <div
+      class="pt-4 mt-4 text-xs [&>a]:cursor-pointer [&>a:hover]:underline text-muted-foreground border-t border-secondary">
+      By signing in, you agree to our <a>Terms of Service</a> and
+      <a>Privacy Policy</a>.
+    </div>
+    } @else{
+    <form [formGroup]="form" (ngSubmit)="supabase.signInWithEmail(form.controls.email.value)"
+      class="flex flex-col gap-2">
+      <label class="text-sm font-semibold" for="email">Email</label>
+      <input class="full bg-background border-secondary" hlmInput placeholder="example@reqquest.com" name="email"
+        type="email" />
+      @if( form.controls.email.invalid && (form.controls.email.touched ||
+      form.controls.email.dirty)){
+      @if(form.controls.email.errors?.['required']){
+      <small> Email is required </small>
+      } @if(form.controls.email.errors?.['email']){
+      <small> Email is invalid </small>
+      } }
+      <button variant="secondary" type="submit" hlmBtn>Send magic link</button>
+      <div class="pt-2 mt-4 border-t border-secondary">
+        <a variant="link" class="cursor-pointer pl-0" (click)="formTrigger.set(false)" hlmBtn>
+          <ng-icon hlm class="mr-2" size="sm" name="lucideArrowLeft" />
+          All sigin options</a>
+      </div>
+    </form>
+    }
   </div>
 </hlm-dialog-content>
