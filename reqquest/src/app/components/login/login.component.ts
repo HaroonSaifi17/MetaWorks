@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import {
   BrnDialogContentDirective,
@@ -10,7 +10,7 @@ import {
 } from '@spartan-ng/ui-dialog-helm';
 import { NgIcon } from '@ng-icons/core';
 import { HlmIconDirective,  } from '@spartan-ng/ui-icon-helm';
-import { createClient } from '@supabase/supabase-js';
+import { SupabaseAuthService } from '@meta-works/shared-services';
 
 @Component({
   selector: 'reqquest-login',
@@ -27,10 +27,5 @@ import { createClient } from '@supabase/supabase-js';
   styleUrl: './login.component.css',
 })
 export class LoginComponent {
-  supabase = createClient(import.meta.env['VITE_SUPABASE_URL'],import.meta.env['VITE_ANON_PUBLIC_KEY']);
-  login(){
-    this.supabase.auth.signInWithOAuth({
-      provider: 'google',
-      })
-  }
+  supabase = inject(SupabaseAuthService);
 }

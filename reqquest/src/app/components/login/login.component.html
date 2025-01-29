@@ -3,11 +3,11 @@
     <h3 hlmDialogTitle class="text-center">Login to ReqQuest</h3>
   </hlm-dialog-header>
   <div class="w-96 [&>button]:justify-start [&>button]:gap-2 [&>button]:font-semibold flex flex-col gap-1 pt-1">
-    <button variant="ghost" (click)="login()" hlmBtn>
+    <button variant="ghost" (click)="supabase.signInWithProvider('google')" hlmBtn>
       <ng-icon hlm name="ionLogoGoogle" />
       Continue with Google
     </button>
-    <button variant="ghost" hlmBtn>
+    <button variant="ghost" (click)="supabase.signInWithProvider('github')" hlmBtn>
       <ng-icon hlm name="ionLogoGithub" />
       Continue with GitHub
     </button>

@@ -16,6 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@meta-works/libs": ["reqquest/src/app/components/libs/src/index.ts"],
+      "@meta-works/shared-services": ["libs/features/auth/src/index.ts"],
       "@spartan-ng/ui-button-helm": ["libs/ui/ui-button-helm/src/index.ts"],
       "@spartan-ng/ui-dialog-helm": ["libs/ui/ui-dialog-helm/src/index.ts"],
       "@spartan-ng/ui-formfield-helm": [
