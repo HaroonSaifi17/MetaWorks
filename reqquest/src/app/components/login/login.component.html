@@ -39,7 +39,7 @@
       </small>
       }
 
-      <button type="submit" hlmBtn [disabled]="authService.isLoading()" aria-label="Send magic link">
+      <button type="submit" hlmBtn [disabled]="authService.isLoading()" class="mt-2" aria-label="Send magic link">
         @if (authService.isLoading()) {
         <ng-icon name="lucideLoaderCircle" class="mr-2 animate-spin" hlm />
         } Send magic link

@@ -17,6 +17,39 @@
       </div>
     </button>
   </div>
+  @if(authService.user()){
+  <div class="flex-1 justify-end gap-2 items-center">
+    <button size="sm" brnDialogTrigger class="gap-2 text-nowrap max-sm:hidden" hlmBtn>
+      <ng-icon hlm size="sm" name="heroCloudArrowUp" />
+      Save My Workspace
+    </button>
+    <hlm-avatar [brnMenuTriggerFor]="menu" variant="medium">
+      <img [src]="authService.user()!.user_metadata['avatar_url']" alt="avator" hlmAvatarImage />
+      <span class="bg-[#FD005B] text-white uppercase" hlmAvatarFallback>{{
+        authService.user()!.user_metadata['full_name'] | slice : 0 : 2
+        }}</span>
+    </hlm-avatar>
+    <ng-template #menu>
+      <hlm-menu>
+        <hlm-menu-label>My Account</hlm-menu-label>
+        <hlm-menu-separator />
+        <hlm-menu-group>
+          <button hlmMenuItem>
+            Profile
+            <hlm-menu-shortcut>⇧⌘P</hlm-menu-shortcut>
+          </button>
+
+          <button hlmMenuItem>
+            <hlm-icon name="lucideLogOut" hlmMenuIcon />
+            <span>Logout</span>
+            <hlm-menu-shortcut>⇧⌘Q</hlm-menu-shortcut>
+          </button>
+        </hlm-menu-group>
+      </hlm-menu>
+    </ng-template>
+  </div>
+  } @else{
+
   <hlm-dialog class="gap-2 [&>button]:font-semibold flex flex-1 justify-end [&>*]:text-xs [&>button]:h-8">
     <button size="sm" brnDialogTrigger class="gap-2 text-nowrap max-sm:hidden" hlmBtn (click)="formTrigger.set(false)">
       <ng-icon hlm size="sm" name="heroCloudArrowUp" />
@@ -26,4 +59,6 @@
     </button>
     <reqquest-login [formTrigger]="formTrigger"></reqquest-login>
   </hlm-dialog>
+  }
 </section>
+{{ authService.user() | json }}

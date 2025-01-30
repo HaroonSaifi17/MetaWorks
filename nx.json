@@ -1,7 +1,10 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
     "production": [
       "default",
       "!{projectRoot}/eslint.config.cjs",
@@ -11,7 +14,9 @@
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
-    "sharedGlobals": ["{workspaceRoot}/azure-pipelines.yml"]
+    "sharedGlobals": [
+      "{workspaceRoot}/azure-pipelines.yml"
+    ]
   },
   "nxCloudId": "67924194d5bb817417957cfd",
   "plugins": [
@@ -25,12 +30,21 @@
   "targetDefaults": {
     "@nx/angular:ng-packagr-lite": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "production",
+        "^production"
+      ]
     },
     "@nx/jest:jest": {
       "cache": true,
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "inputs": [
+        "default",
+        "^production",
+        "{workspaceRoot}/jest.preset.js"
+      ],
       "options": {
         "passWithNoTests": true
       },

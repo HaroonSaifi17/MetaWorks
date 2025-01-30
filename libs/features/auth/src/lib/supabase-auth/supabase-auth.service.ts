@@ -1,5 +1,6 @@
-import { Injectable, signal } from '@angular/core';
-import { createClient } from '@supabase/supabase-js';
+import { Injectable, Signal, signal } from '@angular/core';
+import { createClient, User } from '@supabase/supabase-js';
+import { fromEventPattern } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,6 @@ export class SupabaseAuthService {
     import.meta.env['VITE_ANON_PUBLIC_KEY']
   );
 
-  constructor() {}
   isLoading = signal(false);
   isSuccess = signal(false);
   isError = signal<string | null>(null);
@@ -37,5 +37,40 @@ export class SupabaseAuthService {
     } else {
       this.isSuccess.set(true);
     }
+  }
+  user = signal<User | null>(null);
+  constructor() {
+    fromEventPattern((handler) =>
+      this.supabase.auth.onAuthStateChange((_event, session) => {
+        this.user.set(session?.user ?? null);
+        handler(session?.user ?? null);
+      })
+    );
+    this.checkCurrentUser();
+  }
+
+  private async checkCurrentUser() {
+    const {
+      data: { user },
+    } = await this.supabase.auth.getUser();
+    this.user.set(user);
+  }
+
+  async signIn(email: string, password: string) {
+    const { data, error } = await this.supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    return { data, error };
+  }
+
+  async signOut() {
+    const { error } = await this.supabase.auth.signOut();
+    this.user.set(null);
+    return { error };
+  }
+
+  get currentUser(): Signal<User | null> {
+    return this.user.asReadonly();
   }
 }
