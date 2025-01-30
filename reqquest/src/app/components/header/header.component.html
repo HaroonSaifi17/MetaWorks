@@ -1,64 +1,104 @@
-<section
-  class="flex max-w-screen-2xl mx-auto justify-between items-center p-2 border-b border-secondary [&>div]:gap-2 [&>div]:flex [&>div>*]:text-xs [&>div>*]:font-semibold [&>div>button]:h-8">
+<header class="flex justify-between items-center p-2 border-b border-secondary">
+  <!-- Logo Section -->
   <div class="flex-1">
-    <a hlmBtn variant="link" class="uppercase font-semibold cursor-pointer">ReqQuest</a>
+    <a hlmBtn variant="link" class="uppercase font-semibold cursor-pointer" routerLink="/">
+      ReqQuest
+      <span class="sr-only">Home</span>
+    </a>
   </div>
-  <div class="flex-shrink">
-    <button class="gap-2 w-[25vw] overflow-hidden max-w-60 max-sm:w-[40vw] min-w-10 justify-between" type="menu" hlmBtn
-      variant="outline" size="sm">
-      <div class="items-center flex gap-1">
-        <ng-icon hlm size="xs" name="lucideSearch" />
-        Search
+
+  <!-- Search Button -->
+  <div class="flex-shrink-0 gap-2 flex">
+    <button hlmBtn variant="outline" size="sm" class="gap-2 w-full sm:w-60 justify-between" type="button"
+      aria-label="Open search">
+      <div class="flex items-center gap-1">
+        <ng-icon hlm size="xs" name="lucideSearch" aria-hidden="true" />
+        <span>Search</span>
       </div>
-      <div
-        class="gap-1 font-normal flex [&>span]:border-muted [&>span]:border [&>span]:bg-background [&>span]:rounded-sm [&>span]:px-1">
-        <span> Ctl </span>
-        <span>K</span>
+      <div class="flex gap-1 font-normal">
+        <kbd class="border-muted border bg-background rounded-sm px-1">Ctrl</kbd>
+        <kbd class="border-muted border bg-background rounded-sm px-1">K</kbd>
       </div>
     </button>
-  </div>
-  @if(authService.user()){
-  <div class="flex-1 justify-end gap-2 items-center">
-    <button size="sm" brnDialogTrigger class="gap-2 text-nowrap max-sm:hidden" hlmBtn>
-      <ng-icon hlm size="sm" name="heroCloudArrowUp" />
-      Save My Workspace
+    <button hlmBtn hlmTooltipTrigger="Support ?" aria-describedby="Support ?" variant="ghost" size="sm" type="button"
+      aria-label="Support">
+      <ng-icon hlm size="sm" name="lucideLifeBuoy" aria-hidden="true" />
     </button>
-    <hlm-avatar [brnMenuTriggerFor]="menu" variant="medium">
-      <img [src]="authService.user()!.user_metadata['avatar_url']" alt="avator" hlmAvatarImage />
-      <span class="bg-[#FD005B] text-white uppercase" hlmAvatarFallback>{{
-        authService.user()!.user_metadata['full_name'] | slice : 0 : 2
-        }}</span>
+  </div>
+
+  <!-- User Section -->
+  @if (user(); as user) {
+  <div class="flex-1 flex justify-end gap-2 items-center">
+    <button hlmBtn hlmTooltipTrigger="Invite people to this workspace"
+      aria-describedby="Invite people to this workspace" brnDialogTrigger size="sm" brnDialogTrigger variant="outline"
+      class="gap-2 text-emerald-500 border-emerald-500 hover:bg-emerald-500/20 hover:text-emerald-500 bg-emerald-500/10 max-sm:hidden"
+      aria-label="Save workspace">
+      <ng-icon hlm size="sm" name="lucideUserPlus" aria-hidden="true" />
+    </button>
+    <button hlmBtn hlmTooltipTrigger="Change workspace" aria-describedby="Change workspace" size="sm" brnDialogTrigger
+      variant="outline"
+      class="gap-2 text-blue-500 border-blue-500 hover:bg-blue-500/20 hover:text-blue-500 bg-blue-500/10 max-sm:hidden"
+      aria-label="Save workspace">
+      <ng-icon hlm size="sm" name="heroCloudArrowUp" aria-hidden="true" />
+      Personal Workspace
+    </button>
+
+    <!-- Avatar Menu -->
+    <hlm-avatar [hlmTooltipTrigger]="user.user_metadata['full_name']"
+      [aria-describedby]="user.user_metadata['full_name']" [brnMenuTriggerFor]="menu" variant="medium"
+      class="cursor-pointer">
+      <img [src]="user.user_metadata['avatar_url']" alt="User avatar" hlmAvatarImage
+        (error)="handleImageError($event)" />
+      <span class="bg-secondary uppercase" hlmAvatarFallback>
+        {{ user.user_metadata['full_name'] | slice : 0 : 2 }}
+      </span>
     </hlm-avatar>
+
     <ng-template #menu>
       <hlm-menu>
-        <hlm-menu-label>My Account</hlm-menu-label>
+        <hlm-menu-label class="px-4 py-2">
+          <div class="font-medium">{{ user.user_metadata['full_name'] }}</div>
+          <div class="text-xs text-muted-foreground">
+            {{ user.user_metadata['email'] }}
+          </div>
+        </hlm-menu-label>
         <hlm-menu-separator />
-        <hlm-menu-group>
-          <button hlmMenuItem>
+        <hlm-menu-group class="[&>button]:gap-2 [&>button]:cursor-pointer">
+          <button hlmMenuItem role="menuitem" class="hidden"></button>
+          <button hlmMenuItem role="menuitem">
+            <ng-icon name="lucideUser" aria-hidden="true" />
             Profile
-            <hlm-menu-shortcut>⇧⌘P</hlm-menu-shortcut>
+            <hlm-menu-shortcut>P</hlm-menu-shortcut>
           </button>
-
-          <button hlmMenuItem>
-            <hlm-icon name="lucideLogOut" hlmMenuIcon />
-            <span>Logout</span>
-            <hlm-menu-shortcut>⇧⌘Q</hlm-menu-shortcut>
+          <button hlmMenuItem role="menuitem">
+            <ng-icon name="lucideSettings" aria-hidden="true" />
+            Settings
+            <hlm-menu-shortcut>S</hlm-menu-shortcut>
+          </button>
+          <button hlmMenuItem role="menuitem" (click)="this.authService.logout()">
+            <ng-icon name="lucideLogOut" aria-hidden="true" />
+            Logout
+            <hlm-menu-shortcut>Q</hlm-menu-shortcut>
           </button>
         </hlm-menu-group>
       </hlm-menu>
     </ng-template>
   </div>
-  } @else{
-
-  <hlm-dialog class="gap-2 [&>button]:font-semibold flex flex-1 justify-end [&>*]:text-xs [&>button]:h-8">
-    <button size="sm" brnDialogTrigger class="gap-2 text-nowrap max-sm:hidden" hlmBtn (click)="formTrigger.set(false)">
-      <ng-icon hlm size="sm" name="heroCloudArrowUp" />
-      Save My Workspace</button><button (click)="formTrigger.set(false)" brnDialogTrigger hlmBtn size="sm"
-      variant="secondary">
-      Login
-    </button>
-    <reqquest-login [formTrigger]="formTrigger"></reqquest-login>
-  </hlm-dialog>
+  } @else {
+  <!-- Auth Actions -->
+  <div class="flex-1 flex justify-end">
+    <hlm-dialog class="flex gap-2">
+      <button hlmBtn brnDialogTrigger size="sm" brnDialogTrigger variant="outline"
+        class="gap-2 text-emerald-500 border-emerald-500 hover:bg-emerald-500/20 hover:text-emerald-500 bg-emerald-500/10 max-sm:hidden"
+        aria-label="Save workspace">
+        <ng-icon hlm size="sm" name="heroCloudArrowUp" aria-hidden="true" />
+        Create Workspace
+      </button>
+      <button brnDialogTrigger hlmBtn size="sm" variant="secondary" class="text-nowrap">
+        Login
+      </button>
+      <reqquest-login [formTrigger]="formTrigger"></reqquest-login>
+    </hlm-dialog>
+  </div>
   }
-</section>
-{{ authService.user() | json }}
+</header>

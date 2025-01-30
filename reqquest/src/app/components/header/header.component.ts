@@ -3,7 +3,14 @@ import { HlmButtonDirective } from '@spartan-ng/ui-button-helm';
 import { HlmIconDirective } from '@spartan-ng/ui-icon-helm';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { heroCloudArrowUp } from '@ng-icons/heroicons/outline';
-import { lucideSearch } from '@ng-icons/lucide';
+import {
+  lucideLifeBuoy,
+  lucideLogOut,
+  lucideSearch,
+  lucideSettings,
+  lucideUser,
+  lucideUserPlus,
+} from '@ng-icons/lucide';
 import { LoginComponent } from '../login/login.component';
 import { BrnDialogTriggerDirective } from '@spartan-ng/brain/dialog';
 import { HlmDialogComponent } from '@spartan-ng/ui-dialog-helm';
@@ -18,13 +25,14 @@ import {
   HlmMenuComponent,
   HlmMenuGroupComponent,
   HlmMenuItemDirective,
-  HlmMenuItemIconDirective,
-  HlmMenuItemSubIndicatorComponent,
   HlmMenuLabelComponent,
   HlmMenuSeparatorComponent,
   HlmMenuShortcutComponent,
-  HlmSubMenuComponent,
 } from '@spartan-ng/ui-menu-helm';
+import {
+  HlmTooltipComponent,
+  HlmTooltipTriggerDirective,
+} from '@spartan-ng/ui-tooltip-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
 
 @Component({
@@ -43,19 +51,32 @@ import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
     HlmMenuComponent,
     HlmMenuGroupComponent,
     HlmMenuItemDirective,
-    HlmMenuItemIconDirective,
-    HlmMenuItemSubIndicatorComponent,
     HlmMenuLabelComponent,
     HlmMenuSeparatorComponent,
     HlmMenuShortcutComponent,
-    HlmSubMenuComponent,
     BrnMenuTriggerDirective,
+    HlmTooltipTriggerDirective,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
-  providers: [provideIcons({ heroCloudArrowUp, lucideSearch })],
+  providers: [
+    provideIcons({
+      heroCloudArrowUp,
+      lucideSearch,
+      lucideLogOut,
+      lucideSettings,
+      lucideUser,
+      lucideUserPlus,
+      lucideLifeBuoy
+    }),
+  ],
 })
 export class HeaderComponent {
   formTrigger = signal(false);
   authService = inject(SupabaseAuthService);
+  handleImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.style.display = 'none';
+  }
+  user = this.authService.user;
 }

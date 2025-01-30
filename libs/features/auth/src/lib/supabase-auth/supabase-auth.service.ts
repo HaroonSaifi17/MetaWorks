@@ -21,7 +21,8 @@ export class SupabaseAuthService {
     });
   }
   async logout() {
-    return this.supabase.auth.signOut();
+    await this.supabase.auth.signOut();
+    this.user.set(null);
   }
   async signInWithEmail(email: string) {
     this.isLoading.set(true);
