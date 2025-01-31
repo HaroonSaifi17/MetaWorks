@@ -30,10 +30,10 @@ import {
   HlmMenuShortcutComponent,
 } from '@spartan-ng/ui-menu-helm';
 import {
-  HlmTooltipComponent,
   HlmTooltipTriggerDirective,
 } from '@spartan-ng/ui-tooltip-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'reqquest-header',
@@ -56,6 +56,7 @@ import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
     HlmMenuShortcutComponent,
     BrnMenuTriggerDirective,
     HlmTooltipTriggerDirective,
+    RouterLink
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',

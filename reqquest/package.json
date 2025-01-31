@@ -1,3 +1,6 @@
 {
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@ng-icons/bootstrap-icons": "^30.2.0"
+  }
 }

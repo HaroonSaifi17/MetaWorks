@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { HeaderComponent } from '../components/header/header.component';
+import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from '../components/footer/footer.component';
+import { NavComponent } from '../components/nav/nav.component';
 
 @Component({
   selector: 'reqquest-home',
 
-  imports: [HeaderComponent],
+  imports: [HeaderComponent, RouterOutlet, FooterComponent, NavComponent],
   template: `
-    <reqquest-header></reqquest-header>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-          <h1>Home</h1>
+    <div class="flex flex-col min-h-screen">
+      <reqquest-header></reqquest-header>
+      <main class="flex-1 flex max-md:flex-col-reverse">
+        <reqquest-nav [sidebarExpanded]="sidebarExpanded"></reqquest-nav>
+        <div class="flex-1">
+          <router-outlet></router-outlet>
         </div>
-      </div>
+      </main>
+      <reqquest-footer class="max-md:hidden" [sidebarExpanded]="sidebarExpanded"></reqquest-footer>
     </div>
   `,
 })
-export default class HomeComponent {}
+export default class HomeComponent {
+  sidebarExpanded =signal(true);
+}

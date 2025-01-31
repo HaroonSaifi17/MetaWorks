@@ -1,7 +1,7 @@
-<header class="flex justify-between items-center p-2 border-b border-secondary">
+<header class="flex w-screen overflow-x-flex-col-reverseustify-between items-center p-2 py-1 border-b border-secondary">
   <!-- Logo Section -->
   <div class="flex-1">
-    <a hlmBtn variant="link" class="uppercase font-semibold cursor-pointer" routerLink="/">
+    <a hlmBtn routerLink="/" variant="link" class="uppercase font-semibold cursor-pointer" routerLink="/">
       ReqQuest
       <span class="sr-only">Home</span>
     </a>
@@ -9,7 +9,7 @@
 
   <!-- Search Button -->
   <div class="flex-shrink-0 gap-2 flex">
-    <button hlmBtn variant="outline" size="sm" class="gap-2 w-full sm:w-60 justify-between" type="button"
+    <button hlmBtn variant="outline" size="sm" class="gap-2 w-full max-sm:w-[20vw] overflow-hidden sm:w-60 justify-between h-8" type="button"
       aria-label="Open search">
       <div class="flex items-center gap-1">
         <ng-icon hlm size="xs" name="lucideSearch" aria-hidden="true" />
@@ -20,27 +20,27 @@
         <kbd class="border-muted border bg-background rounded-sm px-1">K</kbd>
       </div>
     </button>
-    <button hlmBtn hlmTooltipTrigger="Support ?" aria-describedby="Support ?" variant="ghost" size="sm" type="button"
-      aria-label="Support">
+    <button hlmBtn hlmTooltipTrigger="Support ?" aria-describedby="Support ?" variant="ghost" class="p-2 h-8" size="sm"
+      type="button" aria-label="Support">
       <ng-icon hlm size="sm" name="lucideLifeBuoy" aria-hidden="true" />
     </button>
   </div>
 
   <!-- User Section -->
   @if (user(); as user) {
-  <div class="flex-1 flex justify-end gap-2 items-center">
+  <div class="flex-1 flex text-nowrap justify-end gap-2 items-center">
     <button hlmBtn hlmTooltipTrigger="Invite people to this workspace"
       aria-describedby="Invite people to this workspace" brnDialogTrigger size="sm" brnDialogTrigger variant="outline"
-      class="gap-2 text-emerald-500 border-emerald-500 hover:bg-emerald-500/20 hover:text-emerald-500 bg-emerald-500/10 max-sm:hidden"
+      class="gap-2 text-emerald-500 border-emerald-500 hover:bg-emerald-500/20 hover:text-emerald-500 h-8 bg-emerald-500/10 max-sm:hidden"
       aria-label="Save workspace">
       <ng-icon hlm size="sm" name="lucideUserPlus" aria-hidden="true" />
     </button>
     <button hlmBtn hlmTooltipTrigger="Change workspace" aria-describedby="Change workspace" size="sm" brnDialogTrigger
       variant="outline"
-      class="gap-2 text-blue-500 border-blue-500 hover:bg-blue-500/20 hover:text-blue-500 bg-blue-500/10 max-sm:hidden"
+      class="gap-2 text-blue-500 border-blue-500 hover:bg-blue-500/20 hover:text-blue-500 h-8 bg-blue-500/10 max-sm:hidden"
       aria-label="Save workspace">
       <ng-icon hlm size="sm" name="heroCloudArrowUp" aria-hidden="true" />
-      Personal Workspace
+      <span class="max-md:hidden"> Personal Workspace </span>
     </button>
 
     <!-- Avatar Menu -->
@@ -89,12 +89,12 @@
   <div class="flex-1 flex justify-end">
     <hlm-dialog class="flex gap-2">
       <button hlmBtn brnDialogTrigger size="sm" brnDialogTrigger variant="outline"
-        class="gap-2 text-emerald-500 border-emerald-500 hover:bg-emerald-500/20 hover:text-emerald-500 bg-emerald-500/10 max-sm:hidden"
+        class="gap-2 text-emerald-500 border-emerald-500 text-nowrap h-8 hover:bg-emerald-500/20 hover:text-emerald-500 bg-emerald-500/10 max-sm:hidden"
         aria-label="Save workspace">
         <ng-icon hlm size="sm" name="heroCloudArrowUp" aria-hidden="true" />
         Create Workspace
       </button>
-      <button brnDialogTrigger hlmBtn size="sm" variant="secondary" class="text-nowrap">
+      <button brnDialogTrigger hlmBtn size="sm" variant="secondary" class="text-nowrap h-8">
         Login
       </button>
       <reqquest-login [formTrigger]="formTrigger"></reqquest-login>
