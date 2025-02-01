@@ -1,26 +1,26 @@
-<header class="flex w-screen overflow-x-flex-col-reverseustify-between items-center p-2 py-1 border-b border-secondary">
+<header class="flex w-screen overflow-x-flex-col-reverseustify-between items-center p-4 gap-4 py-1 border-b border-secondary">
   <!-- Logo Section -->
-  <div class="flex-1">
-    <a hlmBtn routerLink="/" variant="link" class="uppercase font-semibold cursor-pointer" routerLink="/">
+  <div class="sm:flex-1">
+    <a hlmBtn routerLink="/" variant="link" class="uppercase px-0 font-semibold cursor-pointer" routerLink="/">
       ReqQuest
       <span class="sr-only">Home</span>
     </a>
   </div>
 
   <!-- Search Button -->
-  <div class="flex-shrink-0 gap-2 flex">
-    <button hlmBtn variant="outline" size="sm" class="gap-2 w-full max-sm:w-[20vw] overflow-hidden sm:w-60 justify-between h-8" type="button"
+  <div class="flex-shrink-0 gap-2 flex max-sm:flex-1 justify-center">
+    <button hlmBtn variant="outline" size="sm" class="gap-2 max-md:max-w-40 max-md:w-full w-60  overflow-hidden justify-between h-8" type="button"
       aria-label="Open search">
       <div class="flex items-center gap-1">
         <ng-icon hlm size="xs" name="lucideSearch" aria-hidden="true" />
         <span>Search</span>
       </div>
-      <div class="flex gap-1 font-normal">
+      <div class="flex gap-1 max-sm:hidden font-normal">
         <kbd class="border-muted border bg-background rounded-sm px-1">Ctrl</kbd>
         <kbd class="border-muted border bg-background rounded-sm px-1">K</kbd>
       </div>
     </button>
-    <button hlmBtn hlmTooltipTrigger="Support ?" aria-describedby="Support ?" variant="ghost" class="p-2 h-8" size="sm"
+    <button hlmBtn hlmTooltipTrigger="Support ?" aria-describedby="Support ?" variant="ghost" class="p-2 max-[350px]:hidden h-8" size="sm"
       type="button" aria-label="Support">
       <ng-icon hlm size="sm" name="lucideLifeBuoy" aria-hidden="true" />
     </button>
@@ -28,7 +28,7 @@
 
   <!-- User Section -->
   @if (user(); as user) {
-  <div class="flex-1 flex text-nowrap justify-end gap-2 items-center">
+  <div class="sm:flex-1 flex text-nowrap justify-end gap-2 items-center">
     <button hlmBtn hlmTooltipTrigger="Invite people to this workspace"
       aria-describedby="Invite people to this workspace" brnDialogTrigger size="sm" brnDialogTrigger variant="outline"
       class="gap-2 text-emerald-500 border-emerald-500 hover:bg-emerald-500/20 hover:text-emerald-500 h-8 bg-emerald-500/10 max-sm:hidden"
@@ -86,10 +86,10 @@
   </div>
   } @else {
   <!-- Auth Actions -->
-  <div class="flex-1 flex justify-end">
-    <hlm-dialog class="flex gap-2">
+  <div class="sm:flex-1 flex justify-end">
+    <hlm-dialog class="flex">
       <button hlmBtn brnDialogTrigger size="sm" brnDialogTrigger variant="outline"
-        class="gap-2 text-emerald-500 border-emerald-500 text-nowrap h-8 hover:bg-emerald-500/20 hover:text-emerald-500 bg-emerald-500/10 max-sm:hidden"
+        class="gap-2 text-emerald-500 border-emerald-500 mr-2 text-nowrap h-8 hover:bg-emerald-500/20 hover:text-emerald-500 bg-emerald-500/10 max-sm:hidden"
         aria-label="Save workspace">
         <ng-icon hlm size="sm" name="heroCloudArrowUp" aria-hidden="true" />
         Create Workspace

@@ -10,7 +10,7 @@ import { NavComponent } from '../components/nav/nav.component';
 
   imports: [HeaderComponent, RouterOutlet, FooterComponent, NavComponent],
   template: `
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col min-h-[100dvh]">
       <reqquest-header></reqquest-header>
       <main class="flex-1 flex max-md:flex-col-reverse">
         <reqquest-nav [sidebarExpanded]="sidebarExpanded"></reqquest-nav>

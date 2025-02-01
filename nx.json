@@ -18,7 +18,6 @@
       "{workspaceRoot}/azure-pipelines.yml"
     ]
   },
-  "nxCloudId": "67924194d5bb817417957cfd",
   "plugins": [
     {
       "plugin": "@nx/eslint/plugin",
