@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
 rest
  `,
 })
-export default class MainComponent {}
+export default class RestComponent {}

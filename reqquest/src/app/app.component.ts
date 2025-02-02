@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'reqquest-root',
+  standalone: true,
   imports: [RouterOutlet],
   template: ` <router-outlet></router-outlet> `,
 })
