@@ -17,6 +17,7 @@ import { Input } from '@angular/core';
 
 @Component({
   selector: 'reqquest-footer',
+  standalone: true,
   imports: [
     NgIcon,
     HlmIconDirective,

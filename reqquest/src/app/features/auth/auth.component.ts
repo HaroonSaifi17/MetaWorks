@@ -26,7 +26,8 @@ interface AuthProvider {
 }
 
 @Component({
-  selector: 'reqquest-login',
+  selector: 'reqquest-auth',
+  standalone: true,
   imports: [
     BrnDialogContentDirective,
     HlmDialogContentComponent,
@@ -39,10 +40,10 @@ interface AuthProvider {
     HlmInputDirective,
     ReactiveFormsModule,
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  templateUrl: './auth.component.html',
+  styleUrl: './auth.component.css',
 })
-export class LoginComponent {
+export class AuthComponent {
   @Input() formTrigger = signal(false);
 
   authService = inject(SupabaseAuthService);

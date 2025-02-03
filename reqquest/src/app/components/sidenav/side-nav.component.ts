@@ -7,7 +7,8 @@ import { Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'reqquest-nav',
+  selector: 'reqquest-side-nav',
+  standalone: true,
   imports: [
     RouterLink,
     CommonModule,
@@ -15,10 +16,10 @@ import { CommonModule } from '@angular/common';
     NgIcon,
     HlmIconDirective,
   ],
-  templateUrl: './nav.component.html',
-  styleUrl: './nav.component.css',
+  templateUrl: './side-nav.component.html',
+  styleUrl: './side-nav.component.css',
   providers: [provideIcons({ lucideLink2, lucideSettings, lucideGlobe })],
 })
-export class NavComponent {
+export class SideNavComponent {
   @Input() sidebarExpanded = signal(true);
 }

@@ -11,7 +11,6 @@ import {
   lucideUser,
   lucideUserPlus,
 } from '@ng-icons/lucide';
-import { LoginComponent } from '../login/login.component';
 import { BrnDialogTriggerDirective } from '@spartan-ng/brain/dialog';
 import { HlmDialogComponent } from '@spartan-ng/ui-dialog-helm';
 import { SupabaseAuthService } from '@meta-works/shared-services';
@@ -34,14 +33,16 @@ import {
 } from '@spartan-ng/ui-tooltip-helm';
 import { BrnMenuTriggerDirective } from '@spartan-ng/brain/menu';
 import { RouterLink } from '@angular/router';
+import { AuthComponent } from '../../features/auth/auth.component';
 
 @Component({
   selector: 'reqquest-header',
+  standalone: true,
   imports: [
     HlmButtonDirective,
     HlmIconDirective,
     NgIcon,
-    LoginComponent,
+    AuthComponent,
     BrnDialogTriggerDirective,
     HlmDialogComponent,
     CommonModule,

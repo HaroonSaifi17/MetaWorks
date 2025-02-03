@@ -9,33 +9,33 @@ export default defineConfig(({ mode }) => {
   return {
     root: __dirname,
     cacheDir: `../node_modules/.vite`,
-    
+
     ssr: {
-      noExternal: ['@analogjs/trpc','@trpc/server'],
+      noExternal: ['@analogjs/trpc', '@trpc/server'],
     },
-    
+
     build: {
       outDir: '../dist/./reqquest/client',
-      reportCompressedSize: true,    
+      reportCompressedSize: true,
       target: ['es2020'],
     },
     server: {
+      hmr: true,
       fs: {
         allow: ['.'],
       },
-    },    
+    },
     plugins: [
-      
       analog({
         nitro: {
           routeRules: {
             '/': {
               prerender: false,
-            }
-          }
-        }
+            },
+          },
+        },
       }),
-      
+
       nxViteTsPaths(),
     ],
     test: {
