@@ -1,2 +1,19 @@
-<p  class="bg-red-400">tab-bar works!</p>
-dddd
+<div class="bg-muted-foreground/10">
+  @for( tab of tabs();track i;let i = $index) {
+  <button class="py-4 pl-6  box-border" [ngClass]="
+      tab.isActive
+        ? ' border-t-[3px] !border-blue-500 bg-background'
+        : ' !border-muted-foreground/10'
+    " (click)="setActive(i)">
+    <span>{{tab.requestMethod}}</span>
+    {{ tab.name }}
+    <ng-icon class="mx-3" name="lucideX"></ng-icon>
+  </button>
+  }
+  <button hlmBtn variant="ghost" class="ml-2 p-2 h-8" (click)="addTab()" size="sm">
+    <ng-icon name="lucidePlus"></ng-icon>
+  </button>
+</div>
+@for( tab of tabs();track i;let i = $index) {
+<reqquest-rest-panel (requestMethodEvent)="changeMethod(i,$event)"  [style.display]="tab.isActive ? 'block' : 'none'"></reqquest-rest-panel>
+}

@@ -20,7 +20,6 @@ export default defineConfig(({ mode }) => {
       target: ['es2020'],
     },
     server: {
-      hmr: true,
       fs: {
         allow: ['.'],
       },
