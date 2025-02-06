@@ -1,3 +1,14 @@
-<div (click)="count.set(count() + 1)">
-  {{ count() }}
+<div>
+  <div class="p-2">
+    <brn-select class="inline-block " placeholder="GET" >
+      <hlm-select-trigger  class="[&>button]:!border-none [&>button]:!bg-muted-foreground/5 [&>button]:!rounded-r-none ">
+        <hlm-select-value />
+      </hlm-select-trigger>
+      <hlm-select-content>
+        @for (method of requestMethods;track method;let i = $index) {
+        <hlm-option [value]="method">{{ method }}</hlm-option>
+        }
+      </hlm-select-content>
+    </brn-select>
+  </div>
 </div>

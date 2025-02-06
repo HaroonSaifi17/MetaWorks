@@ -1,13 +1,22 @@
-<div class="bg-muted-foreground/10">
+<div class="bg-muted-foreground/5 overflow-x-scroll flex flex-nowrap items-center max-w-full">
   @for( tab of tabs();track i;let i = $index) {
-  <button class="py-4 pl-6  box-border" [ngClass]="
+  <button
+    class="p-3 text-sm box-border inline-flex justify-between min-w-[200px] text-foreground/60 hover:text-foreground items-center gap-2"
+    [ngClass]="
       tab.isActive
         ? ' border-t-[3px] !border-blue-500 bg-background'
-        : ' !border-muted-foreground/10'
-    " (click)="setActive(i)">
-    <span>{{tab.requestMethod}}</span>
-    {{ tab.name }}
-    <ng-icon class="mx-3" name="lucideX"></ng-icon>
+        : ' !border-muted-foreground/10 hover:bg-muted-foreground/10'
+    ">
+    <div class="flex-1 flex justify-start items-center" (click)="setActive(i)">
+      <span [ngClass]="methodColor(tab.requestMethod)" class="text-xs mr-2">{{
+        tab.requestMethod
+        }}</span>
+
+      {{ tab.name }}
+    </div>
+    <span class="p-1 flex justify-center items-center text-foreground/60 hover:text-foreground">
+      <ng-icon (click)="deleteTab(i)" name="lucideX"></ng-icon>
+    </span>
   </button>
   }
   <button hlmBtn variant="ghost" class="ml-2 p-2 h-8" (click)="addTab()" size="sm">
@@ -15,5 +24,6 @@
   </button>
 </div>
 @for( tab of tabs();track i;let i = $index) {
-<reqquest-rest-panel (requestMethodEvent)="changeMethod(i,$event)"  [style.display]="tab.isActive ? 'block' : 'none'"></reqquest-rest-panel>
+<reqquest-rest-panel (requestMethodEvent)="changeMethod(i, $event)"
+  [style.display]="tab.isActive ? 'block' : 'none'"></reqquest-rest-panel>
 }

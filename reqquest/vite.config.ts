@@ -21,11 +21,12 @@ export default defineConfig(({ mode }) => {
     },
     server: {
       fs: {
-        allow: ['.'],
+        allow: ['.','../libs/'],
       },
     },
     plugins: [
       analog({
+        // liveReload: true,
         nitro: {
           routeRules: {
             '/': {

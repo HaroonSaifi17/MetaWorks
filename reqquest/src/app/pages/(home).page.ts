@@ -11,13 +11,13 @@ import { SideNavComponent } from '../components/sidenav/side-nav.component';
 
   imports: [HeaderComponent, RouterOutlet, FooterComponent, SideNavComponent],
   template: `
-    <div class="flex flex-col min-h-[100dvh]">
+    <div class="flex flex-col min-h-[100dvh] max-w-[100vw]">
       <reqquest-header></reqquest-header>
-      <main class="flex-1 flex max-md:flex-col-reverse">
+      <main class="flex flex-grow max-md:flex-col-reverse overflow-hidden">
         <reqquest-side-nav
           [sidebarExpanded]="sidebarExpanded"
         ></reqquest-side-nav>
-        <div class="flex-1">
+        <div class="flex-grow overflow-y-auto">
           <router-outlet></router-outlet>
         </div>
       </main>
