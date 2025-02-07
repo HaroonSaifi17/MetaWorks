@@ -1,16 +1,17 @@
 <footer
-  class="flex text-sm [&>div>button]:text-muted-foreground [&>div>button]:px-2 [&>div>button]:h-8  justify-between px-2 border-t  [&>div]:flex items-center">
+  class="flex items-center justify-between border-t px-2 text-sm [&>div>button]:h-8 [&>div>button]:px-2 [&>div>button]:text-muted-foreground [&>div]:flex">
   <div>
-    <button (click)="sidebarExpanded.set(!sidebarExpanded())" hlmTooltipTrigger="Collapse sidebar" aria-describedby="Collapse sidebar" variant="link" hlmBtn>
+    <button (click)="sidebarExpanded.set(!sidebarExpanded())" hlmTooltipTrigger="Collapse sidebar"
+      aria-describedby="Collapse sidebar" variant="link" hlmBtn>
       <ng-icon name="lucidePanelLeft " hlm size="20px" />
     </button>
-    <button  hlmTooltipTrigger="Intercepter" aria-describedby="Intercepter"  variant="link" hlmBtn>
+    <button hlmTooltipTrigger="Intercepter" aria-describedby="Intercepter" variant="link" hlmBtn>
       <ng-icon name="lucideShieldCheck" hlm size="20px" />
     </button>
   </div>
   <div>
     <button variant="link" hlmBtn class="hover:no-underline">
-      <ng-icon  hlmTooltipTrigger="Info" aria-describedby="Info" name="lucideInfo" class="mr-2" hlm size="20px" />
+      <ng-icon hlmTooltipTrigger="Info" aria-describedby="Info" name="lucideInfo" class="mr-2" hlm size="20px" />
       Help & Support
     </button>
     <button hlmTooltipTrigger="Shortcuts CTL /" aria-describedby="Shortcuts CTL /" variant="link" hlmBtn>
@@ -19,7 +20,7 @@
     <button hlmTooltipTrigger="Horizontal Layout" aria-describedby="Horizontal Layout" variant="link" hlmBtn>
       <ng-icon name="lucideFlipHorizontal" hlm size="20px" />
     </button>
-    <button hlmTooltipTrigger="Collapse sidebar" aria-describedby="Collapse sidebar"variant="link" hlmBtn>
+    <button hlmTooltipTrigger="Collapse sidebar" aria-describedby="Collapse sidebar" variant="link" hlmBtn>
       <ng-icon name="lucidePanelLeftOpen " hlm size="20px" />
     </button>
   </div>

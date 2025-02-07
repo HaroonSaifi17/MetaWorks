@@ -1,11 +1,12 @@
 <hlm-dialog-content *brnDialogContent="let ctx">
-  <hlm-dialog-header class="border-secondary border-b pb-4">
+  <hlm-dialog-header class="border-b border-secondary pb-4">
     <h3 hlmDialogTitle class="text-center">Login to ReqQuest</h3>
   </hlm-dialog-header>
 
   <div
-    class="max-w-[425px] w-[80vw] [&>button]:justify-start [&>button]:gap-2 [&>button]:font-semibold flex flex-col gap-1 pt-1">
-    @if (!formTrigger()) { @for (provider of providers; track provider.id) {
+    class="flex w-[80vw] max-w-[425px] flex-col gap-1 pt-1 [&>button]:justify-start [&>button]:gap-2 [&>button]:font-semibold">
+    @if (!formTrigger()) {
+    @for (provider of providers; track provider.id) {
     <button variant="ghost" (click)="authService.signInWithProvider(provider.id)" hlmBtn
       [attr.aria-label]="'Continue with ' + provider.name">
       <ng-icon [name]="provider.icon" hlm />
@@ -19,33 +20,40 @@
     </button>
 
     <div
-      class="pt-4 mt-4 text-xs [&>button]:cursor-pointer [&>button:hover]:underline text-muted-foreground border-t border-secondary">
+      class="mt-4 border-t border-secondary pt-4 text-xs text-muted-foreground [&>button:hover]:underline [&>button]:cursor-pointer">
       By signing in, you agree to our
-      <button type="button" class="focus:outline-none">Terms of Service</button>
+      <button type="button" class="focus:outline-none">
+        Terms of Service
+      </button>
       and
       <button type="button" class="focus:outline-none">Privacy Policy</button>.
     </div>
-    } @else { @if (!authService.isSuccess()) {
+    } @else {
+    @if (!authService.isSuccess()) {
     <form [formGroup]="form" (ngSubmit)="onSubmit()"
-      class="flex flex-col gap-2 [&>small]:text-red-600 [&>small]:text-xs [&>small]:font-normal">
+      class="flex flex-col gap-2 [&>small]:text-xs [&>small]:font-normal [&>small]:text-red-600">
       <label class="text-sm font-semibold" for="email">Email</label>
-      <input class="full bg-background border-secondary" formControlName="email" hlmInput
+      <input class="full border-secondary bg-background" formControlName="email" hlmInput
         placeholder="example@reqquest.com" id="email" type="email" aria-describedby="email-error" />
 
       @if (showEmailError) {
       <small id="email-error">
-        @if (form.controls.email.errors?.['required']) { *email is required }
-        @else if (form.controls.email.errors?.['email']) { *email is invalid }
+        @if (form.controls.email.errors?.["required"]) {
+        *email is required
+        } @else if (form.controls.email.errors?.["email"]) {
+        *email is invalid
+        }
       </small>
       }
 
       <button type="submit" hlmBtn [disabled]="authService.isLoading()" class="mt-2" aria-label="Send magic link">
         @if (authService.isLoading()) {
         <ng-icon name="lucideLoaderCircle" class="mr-2 animate-spin" hlm />
-        } Send magic link
+        }
+        Send magic link
       </button>
 
-      <div class="pt-2 mt-4 border-t border-secondary">
+      <div class="mt-4 border-t border-secondary pt-2">
         <button type="button" variant="link" class="cursor-pointer pl-0" (click)="formTrigger.set(false)" hlmBtn
           aria-label="Back to sign-in options">
           <ng-icon hlm class="mr-2" size="sm" name="lucideArrowLeft" />
@@ -54,22 +62,23 @@
       </div>
     </form>
     } @else {
-    <div class="flex flex-col justify-center gap-2 items-center">
+    <div class="flex flex-col items-center justify-center gap-2">
       <ng-icon hlm name="lucideInbox" class="text-blue-500" aria-hidden="true" />
       <h2>We sent you a magic link</h2>
       <p class="text-center font-normal">
-        Check your inbox - we sent an email to {{ email }}. It contains a magic
-        link to log you in.
+        Check your inbox - we sent an email to {{ email }}. It contains a
+        magic link to log you in.
       </p>
     </div>
 
-    <div class="pt-2 mt-4 border-t border-secondary flex justify-between">
+    <div class="mt-4 flex justify-between border-t border-secondary pt-2">
       <button type="button" variant="link" class="cursor-pointer pl-0" (click)="authService.isSuccess.set(false)" hlmBtn
         aria-label="Re-enter email">
         <ng-icon hlm class="mr-2" size="sm" name="lucideArrowLeft" />
         Re-enter email
       </button>
     </div>
-    } }
+    }
+    }
   </div>
 </hlm-dialog-content>

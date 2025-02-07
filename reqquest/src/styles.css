@@ -1,4 +1,4 @@
-@import '@angular/cdk/overlay-prebuilt.css';
+@import "@angular/cdk/overlay-prebuilt.css";
 
 @tailwind base;
 @tailwind components;
@@ -12,7 +12,7 @@ body {
 }
 
 :root {
-  --font-sans: '';
+  --font-sans: "";
 }
 
 :root {
@@ -66,4 +66,8 @@ body {
   * {
     @apply border-border;
   }
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
