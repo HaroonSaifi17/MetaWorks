@@ -1,0 +1,41 @@
+<div
+  class="flex max-w-full flex-nowrap items-center overflow-x-scroll bg-muted-foreground/5"
+>
+  @for (tab of tabService.tabs(); track i; let i = $index) {
+    <button
+      class="box-border inline-flex h-12 min-w-[200px] items-center justify-between gap-2 text-sm text-foreground/60 hover:text-foreground"
+      [ngClass]="
+        tabService.activeTab() === i
+          ? 'border-t-[3px] !border-blue-500 bg-background'
+          : '!border-t-[3px] !border-transparent hover:bg-muted-foreground/10'
+      "
+    >
+      <div
+        class="flex h-full flex-1 items-center justify-start pl-3"
+        (click)="tabService.setActiveTab(i)"
+      >
+        <span [ngClass]="tabService.methodColor(tab.method)" class="mr-2 text-xs">{{
+          tab.method
+        }}</span>
+
+        {{ tab.name }}
+      </div>
+      @if (tabService.tabs().length > 1) {
+        <span
+          class="flex h-full items-center justify-center p-1 pr-3 text-foreground/60 hover:text-foreground"
+        >
+          <ng-icon (click)="tabService.deleteTab(i)" name="lucideX"></ng-icon>
+        </span>
+      }
+    </button>
+  }
+  <button
+    hlmBtn
+    variant="ghost"
+    class="ml-2 h-8 p-2"
+    (click)="tabService.addTab()"
+    size="sm"
+  >
+    <ng-icon name="lucidePlus"></ng-icon>
+  </button>
+</div>

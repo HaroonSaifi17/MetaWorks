@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
-import { TabBarComponent } from '../../components/tab-bar/tab-bar.component';
+import { Component } from "@angular/core";
+import { RestPanelComponent } from "../../features/rest-panel/rest-panel.component";
+import { TabBarComponent } from "../../features/rest-panel/component/tab-bar/tab-bar.component";
 
 @Component({
-  selector: 'reqquest-main',
+  selector: "reqquest-main",
   standalone: true,
-  imports: [TabBarComponent],
-  template: ` <reqquest-tab-bar></reqquest-tab-bar> `,
+  imports: [RestPanelComponent, TabBarComponent],
+  template: `
+    <reqquest-tab-bar></reqquest-tab-bar>
+    <reqquest-rest-panel></reqquest-rest-panel>
+  `,
 })
 export default class RestComponent {}
