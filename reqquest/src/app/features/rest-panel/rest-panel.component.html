@@ -1,19 +1,19 @@
 <div class="flex flex-wrap gap-2 p-2">
   <div class="flex flex-1">
-    <brn-select class="inline-block" placeholder="GET">
-      <hlm-select-trigger class="[&>button]:!rounded-r-none [&>button]:!border-none [&>button]:!bg-muted-foreground/5">
+    <brn-select class="inline-block" placeholder="GET" [ngModel]="currentTab().method">
+      <hlm-select-trigger class="[&>button]:!rounded-r-none [&>button]:!border-none [&>button]:!bg-muted-foreground/10">
         <hlm-select-value />
       </hlm-select-trigger>
       <hlm-select-content>
         @for (method of requestMethods; track method; let i = $index) {
-        <hlm-option [ngClass]="tabService.methodColor(method)" (click)="tabService.modifyTab(method)"
+        <hlm-option [ngClass]="tabService.methodColor(method)" (click)="tabService.modifyTab({ method: method })"
           class="!pl-4 [&>*]:hidden" [value]="method">{{ method }}</hlm-option>
         }
       </hlm-select-content>
     </brn-select>
     <input
-      class="w-full min-w-20 flex-1 appearance-none rounded-l-none border-none bg-muted-foreground/5 font-semibold shadow-none outline-none [-moz-appearance:none] [-webkit-appearance:none] focus:shadow-none focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:shadow-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-      hlmInput [value]="'https://reqquest-ten.vercel.app'" type="url" />
+      class="w-full min-w-20 flex-1 appearance-none rounded-l-none border-none bg-muted-foreground/10 font-semibold shadow-none outline-none [-moz-appearance:none] [-webkit-appearance:none] focus:shadow-none focus:outline-none focus:ring-0 focus:ring-offset-0 focus-visible:shadow-none focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+      hlmInput [value]="currentTab().url" #url (input)="tabService.modifyTab({ url: url.value })" type="url" />
   </div>
   <div class="flex gap-2">
     <button hlmBtn class="bg-indigo-600 px-6 font-semibold text-white hover:bg-indigo-500">
@@ -24,4 +24,9 @@
       Save
     </button>
   </div>
+</div>
+<div>
+  @if (this.response) {
+  {{ this.response.value() | json }}
+  }
 </div>

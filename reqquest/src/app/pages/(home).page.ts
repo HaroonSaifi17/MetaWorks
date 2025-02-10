@@ -15,7 +15,7 @@ import { SideNavComponent } from "../components/sidenav/side-nav.component";
       <reqquest-header></reqquest-header>
       <main class="flex flex-grow overflow-hidden max-md:flex-col-reverse">
         <reqquest-side-nav
-          [sidebarExpanded]="sidebarExpanded"
+          [sidebarExpanded]="sidebarExpanded()"
         ></reqquest-side-nav>
         <div class="flex-grow overflow-y-auto">
           <router-outlet></router-outlet>

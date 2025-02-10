@@ -12,6 +12,7 @@ interface Tab {
   name: string;
   url: string;
   method: RequestMethod;
+  response?: any;
 }
 
 export type RequestMethod =
@@ -94,11 +95,14 @@ export class RestTabStateService {
     }
   }
 
-  modifyTab( name?:string, url?:string, method?:RequestMethod) {
+  modifyTab(data: { name?: string; url?: string; method?: RequestMethod }) {
     const tabs = this.state().tabs;
-    tabs[this.state().activeTab].name = name || tabs[this.state().activeTab].name;
-    tabs[this.state().activeTab].url = url || tabs[this.state().activeTab].url;
-    tabs[this.state().activeTab].method = method || tabs[this.state().activeTab].method;
+    tabs[this.state().activeTab].name =
+      data.name || tabs[this.state().activeTab].name;
+    tabs[this.state().activeTab].url =
+      data.url || tabs[this.state().activeTab].url;
+    tabs[this.state().activeTab].method =
+      data.method || tabs[this.state().activeTab].method;
     this.state.set({ ...this.state(), tabs });
   }
 

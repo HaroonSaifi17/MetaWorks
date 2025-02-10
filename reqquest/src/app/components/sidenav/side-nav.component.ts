@@ -1,4 +1,4 @@
-import { Component, signal } from "@angular/core";
+import { Component } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideGlobe, lucideLink2, lucideSettings } from "@ng-icons/lucide";
@@ -23,5 +23,5 @@ import { SvgGraphqlComponent } from "../../utils/svg/graphgl-svg.component";
   providers: [provideIcons({ lucideLink2, lucideSettings, lucideGlobe })],
 })
 export class SideNavComponent {
-  @Input() sidebarExpanded = signal(true);
+  @Input() sidebarExpanded = true;
 }
