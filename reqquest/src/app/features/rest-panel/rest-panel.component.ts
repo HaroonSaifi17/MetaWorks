@@ -1,8 +1,13 @@
-import { Component, computed, inject, resource } from "@angular/core";
+import { Component, inject, OnInit } from "@angular/core";
 import { BrnSelectImports } from "@spartan-ng/brain/select";
 import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import {
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from "@angular/forms";
 import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
 import { NgIcon, provideIcons } from "@ng-icons/core";
@@ -22,14 +27,16 @@ import {
     FormsModule,
     HlmInputDirective,
     HlmButtonDirective,
+    ReactiveFormsModule,
     NgIcon,
   ],
   templateUrl: "./rest-panel.component.html",
   providers: [provideIcons({ lucideSave })],
   styleUrl: "./rest-panel.component.css",
 })
-export class RestPanelComponent {
+export class RestPanelComponent implements OnInit {
   tabService = inject(RestTabStateService);
+  fb = inject(NonNullableFormBuilder);
   requestMethods: RequestMethod[] = [
     "GET",
     "POST",
@@ -41,16 +48,26 @@ export class RestPanelComponent {
     "CONNECT",
     "TRACE",
   ];
-  currentTab = computed(
-    () => this.tabService.tabs()[this.tabService.activeTab()],
-  );
-  response = resource({
-    loader: async () => {
-      const response = await fetch(
-        this.tabService.tabs()[this.tabService.activeTab()].url,
-      );
-      return response.json();
-    },
-  });
+
   constructor() {}
+  ngOnInit() {
+    this.requestForm.valueChanges.subscribe((value) => {
+      this.tabService.modifyTab(value);
+    });
+  }
+
+  activeTab = this.tabService.activeTab();
+  requestForm = this.fb.group({
+    method: [this.activeTab.method || "GET", Validators.required],
+    url: [
+      this.activeTab.url || "",
+      [Validators.required, Validators.pattern(/^https?:\/\/.+/)],
+    ],
+  });
+
+  submitRequest(): void {
+    if (this.requestForm.valid) {
+      this.tabService.submitRequest();
+    }
+  }
 }

@@ -5,7 +5,7 @@
     <button
       class="box-border inline-flex h-12 min-w-[200px] items-center justify-between gap-2 text-sm text-foreground/60 hover:text-foreground"
       [ngClass]="
-        tabService.activeTab() === i
+        tabService.activeTabIndex() === i
           ? 'border-t-[3px] !border-blue-500 bg-background'
           : '!border-t-[3px] !border-transparent hover:bg-muted-foreground/10'
       "

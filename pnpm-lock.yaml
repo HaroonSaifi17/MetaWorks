@@ -122,9 +122,6 @@ importers:
       zod:
         specifier: ^3.24.1
         version: 3.24.1
-      zone.js:
-        specifier: ~0.15.0
-        version: 0.15.0
     devDependencies:
       '@analogjs/platform':
         specifier: ^1.13.0

@@ -1,109 +1,126 @@
-import { computed, effect, Injectable, signal } from "@angular/core";
-
-interface TabSate {
-  activeTab: number;
-  tabs: Tab[];
-  isLoading: boolean;
-  error: string | null;
-}
-
-interface Tab {
-  id: string;
-  name: string;
-  url: string;
-  method: RequestMethod;
-  response?: any;
-}
-
-export type RequestMethod =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "DELETE"
-  | "PATCH"
-  | "OPTIONS"
-  | "HEAD"
-  | "CONNECT"
-  | "TRACE";
+import { HttpClient, HttpResponse } from "@angular/common/http";
+import { computed, effect, inject, Injectable, signal } from "@angular/core";
+import { Subject, switchMap, tap } from "rxjs";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Injectable({
   providedIn: "root",
 })
 export class RestTabStateService {
+  http = inject(HttpClient);
+
   constructor() {
     if (typeof localStorage !== "undefined") {
-      const tabState = localStorage.getItem("tabSate");
+      const tabState = localStorage.getItem("tabState");
       if (tabState) {
-        this.state.set(JSON.parse(tabState));
+        this.state.set(JSON.parse(tabState) as TabState);
       }
     }
 
     effect(() => {
       if (typeof localStorage !== "undefined") {
-        localStorage.setItem("tabSate", JSON.stringify(this.state()));
+        const withoutresponse = {
+          ...this.state(),
+          tabs: this.state().tabs.map((tab) => {
+            const tabCopy = { ...tab };
+            tabCopy.response = null;
+            return tabCopy;
+          }),
+        };
+        localStorage.setItem("tabState", JSON.stringify(withoutresponse));
       }
     });
+
+    this.requestTriggerSubject
+      .pipe(
+        tap(() => {
+          this.state.update((state) => ({ ...state, isLoading: true }));
+        }),
+        switchMap(() => this.http.get(this.activeTab().url)),
+        takeUntilDestroyed(),
+      )
+      .subscribe((data: any) => {
+        const tabs = this.tabs();
+        tabs[this.activeTabIndex()].response = data;
+        this.state.set({
+          activeTabIndex: this.activeTabIndex(),
+          tabs,
+          isLoading: false,
+          error: null,
+        });
+      });
   }
 
-  private state = signal<TabSate>({
+  private state = signal<TabState>({
+    activeTabIndex: 0,
+    tabs: [this.newTab(0), this.newTab(1)],
     isLoading: false,
-    activeTab: 0,
-    tabs: [
-      {
-        id: "0",
-        name: "Untitled",
-        url: "https://jsonplaceholder.typicode.com/todos/1",
-        method: "GET",
-      },
-      {
-        id: "1",
-        name: "Untitled",
-        url: "https://jsonplaceholder.typicode.com/todos/1",
-        method: "GET",
-      },
-    ],
     error: null,
   });
 
-  isLoading = computed(() => this.state().isLoading);
-  activeTab = computed(() => this.state().activeTab);
+  activeTabIndex = computed(() => this.state().activeTabIndex);
   tabs = computed(() => this.state().tabs);
+  activeTab = computed(() => this.state().tabs[this.state().activeTabIndex]);
+  response = computed(
+    () => this.state().tabs[this.state().activeTabIndex].response,
+  );
   error = computed(() => this.state().error);
+  isLoading = computed(() => this.state().isLoading);
+
+  requestTriggerSubject = new Subject<null>();
+
+  submitRequest() {
+    this.requestTriggerSubject.next(null);
+  }
 
   setActiveTab(index: number) {
-    this.state.set({ ...this.state(), activeTab: index });
-  }
-
-  addTab() {
-    const tabs = this.state().tabs;
-    const newTab: Tab = {
-      id: tabs.length.toString(),
-      name: "Untitled",
-      url: "https://jsonplaceholder.typicode.com/todos/1",
-      method: "GET",
-    };
-    this.state.set({ ...this.state(), tabs: [...tabs, newTab] });
-    this.setActiveTab(tabs.length);
-  }
-
-  deleteTab(index: number) {
-    const tabs = this.state().tabs;
-    const newTabs = tabs.filter((_, i) => i !== index);
-    this.state.set({ ...this.state(), tabs: newTabs });
-    if (index === this.state().activeTab) {
-      this.setActiveTab(index - 1);
+    if (index >= 0 && index < this.tabs().length) {
+      this.state.update((state) => ({ ...state, activeTabIndex: index }));
     }
   }
 
+  addTab() {
+    this.state.update((state) => ({
+      ...state,
+      tabs: [...state.tabs, this.newTab(state.tabs.length)],
+    }));
+    this.setActiveTab(this.tabs().length - 1);
+  }
+
+  deleteTab(index: number) {
+    if (this.tabs().length <= 1) {
+      return;
+    }
+
+    this.state.update((state) => {
+      const newTabs = state.tabs.filter((_, i) => i !== index);
+      const newActiveTab =
+        index === state.activeTabIndex
+          ? Math.max(0, index - 1)
+          : index < state.activeTabIndex
+            ? state.activeTabIndex - 1
+            : state.activeTabIndex;
+
+      return {
+        ...state,
+        tabs: newTabs,
+        activeTab: newActiveTab,
+      };
+    });
+  }
+
   modifyTab(data: { name?: string; url?: string; method?: RequestMethod }) {
-    const tabs = this.state().tabs;
-    tabs[this.state().activeTab].name =
-      data.name || tabs[this.state().activeTab].name;
-    tabs[this.state().activeTab].url =
-      data.url || tabs[this.state().activeTab].url;
-    tabs[this.state().activeTab].method =
-      data.method || tabs[this.state().activeTab].method;
-    this.state.set({ ...this.state(), tabs });
+    this.state.update((state) => {
+      const tabs = [...state.tabs];
+      const currentTab = { ...tabs[state.activeTabIndex] };
+
+      if (data.name) currentTab.name = data.name;
+      if (data.url) currentTab.url = data.url;
+      if (data.method) currentTab.method = data.method;
+
+      tabs[state.activeTabIndex] = currentTab;
+      return { ...state, tabs };
+    });
   }
 
   methodColor(method: RequestMethod): string {
@@ -130,4 +147,39 @@ export class RestTabStateService {
         return "text-white";
     }
   }
+  private newTab(index: number): Tab {
+    return {
+      id: index,
+      name: "Untitled",
+      url: "https://jsonplaceholder.typicode.com/todos/1",
+      method: "GET",
+      response: null,
+    };
+  }
 }
+
+interface TabState {
+  activeTabIndex: number;
+  tabs: Tab[];
+  isLoading: boolean;
+  error: Error | null;
+}
+
+interface Tab {
+  id: number;
+  name: string;
+  url: string;
+  method: RequestMethod;
+  response: HttpResponse<any> | null;
+}
+
+export type RequestMethod =
+  | "GET"
+  | "POST"
+  | "PUT"
+  | "DELETE"
+  | "PATCH"
+  | "OPTIONS"
+  | "HEAD"
+  | "CONNECT"
+  | "TRACE";
