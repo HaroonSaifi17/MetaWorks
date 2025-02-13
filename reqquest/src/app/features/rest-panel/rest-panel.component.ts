@@ -16,6 +16,7 @@ import {
   RestTabStateService,
   RequestMethod,
 } from "./utils/rest-tab-state.service";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: "reqquest-rest-panel",
@@ -49,18 +50,30 @@ export class RestPanelComponent implements OnInit {
     "TRACE",
   ];
 
-  constructor() {}
+  constructor() {
+    this.tabService.tabChangeSubject
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        this.requestForm.setValue(
+          {
+            method: this.tabService.activeTab().method,
+            url: this.tabService.activeTab().url,
+          },
+          { emitEvent: false },
+        );
+      });
+  }
+
   ngOnInit() {
     this.requestForm.valueChanges.subscribe((value) => {
       this.tabService.modifyTab(value);
     });
   }
 
-  activeTab = this.tabService.activeTab();
   requestForm = this.fb.group({
-    method: [this.activeTab.method || "GET", Validators.required],
+    method: [this.tabService.activeTab().method || "GET", Validators.required],
     url: [
-      this.activeTab.url || "",
+      this.tabService.activeTab().url || "",
       [Validators.required, Validators.pattern(/^https?:\/\/.+/)],
     ],
   });

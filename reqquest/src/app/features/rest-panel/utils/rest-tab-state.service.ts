@@ -1,6 +1,14 @@
 import { HttpClient, HttpResponse } from "@angular/common/http";
 import { computed, effect, inject, Injectable, signal } from "@angular/core";
-import { Subject, switchMap, tap } from "rxjs";
+import {
+  catchError,
+  EMPTY,
+  from,
+  Subject,
+  switchMap,
+  tap,
+  throwError,
+} from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 
 @Injectable({
@@ -33,21 +41,41 @@ export class RestTabStateService {
 
     this.requestTriggerSubject
       .pipe(
-        tap(() => {
-          this.state.update((state) => ({ ...state, isLoading: true }));
-        }),
-        switchMap(() => this.http.get(this.activeTab().url)),
+        tap(() =>
+          this.state.update((state) => ({ ...state, isLoading: true })),
+        ),
+        switchMap(() =>
+          from(
+            fetch(this.activeTab().url, { method: this.activeTab().method }),
+          ).pipe(
+            switchMap((response) =>
+              response.ok
+                ? from(response.json())
+                : throwError(() => new Error("Network response was not ok")),
+            ),
+            catchError((error) => {
+              this.state.update((state) => ({
+                ...state,
+                isLoading: false,
+                error: error.message,
+              }));
+              return EMPTY;
+            }),
+          ),
+        ),
         takeUntilDestroyed(),
       )
-      .subscribe((data: any) => {
-        const tabs = this.tabs();
-        tabs[this.activeTabIndex()].response = data;
-        this.state.set({
-          activeTabIndex: this.activeTabIndex(),
-          tabs,
-          isLoading: false,
-          error: null,
-        });
+      .subscribe({
+        next: (data: any) => {
+          const tabs = this.tabs();
+          tabs[this.activeTabIndex()].response = data;
+          this.state.set({
+            activeTabIndex: this.activeTabIndex(),
+            tabs,
+            isLoading: false,
+            error: null,
+          });
+        },
       });
   }
 
@@ -68,6 +96,7 @@ export class RestTabStateService {
   isLoading = computed(() => this.state().isLoading);
 
   requestTriggerSubject = new Subject<null>();
+  tabChangeSubject = new Subject<null>();
 
   submitRequest() {
     this.requestTriggerSubject.next(null);
@@ -76,6 +105,7 @@ export class RestTabStateService {
   setActiveTab(index: number) {
     if (index >= 0 && index < this.tabs().length) {
       this.state.update((state) => ({ ...state, activeTabIndex: index }));
+      this.tabChangeSubject.next(null);
     }
   }
 
@@ -94,7 +124,7 @@ export class RestTabStateService {
 
     this.state.update((state) => {
       const newTabs = state.tabs.filter((_, i) => i !== index);
-      const newActiveTab =
+      const newActiveTabIndex =
         index === state.activeTabIndex
           ? Math.max(0, index - 1)
           : index < state.activeTabIndex
@@ -104,9 +134,10 @@ export class RestTabStateService {
       return {
         ...state,
         tabs: newTabs,
-        activeTab: newActiveTab,
+        activeTabIndex: newActiveTabIndex,
       };
     });
+    this.tabChangeSubject.next(null);
   }
 
   modifyTab(data: { name?: string; url?: string; method?: RequestMethod }) {
@@ -162,7 +193,7 @@ interface TabState {
   activeTabIndex: number;
   tabs: Tab[];
   isLoading: boolean;
-  error: Error | null;
+  error: string | null;
 }
 
 interface Tab {

@@ -1,7 +1,7 @@
-<div class=" p-2">
+<div class="p-2">
   <form [formGroup]="requestForm" class="flex flex-wrap gap-2" (ngSubmit)="submitRequest()">
     <div class="flex flex-1">
-      <brn-select class="inline-block" placeholder="GET" formControlName="method">
+      <brn-select class="inline-block" [placeholder]="this.tabService.activeTab().method" formControlName="method">
         <hlm-select-trigger
           class="[&>button]:!rounded-r-none [&>button]:!border-none [&>button]:!bg-muted-foreground/10">
           <hlm-select-value />
@@ -29,8 +29,12 @@
     </div>
   </form>
 </div>
-<div>
+<code class="font-normal">
   @if (!tabService.isLoading()) {
-  {{ tabService.response() | json }}
+  @if (tabService.error()!==null) {
+  <pre>{{ tabService.error()    }}</pre>
+  } @else {
+  <pre>{{ tabService.response() | json }}</pre>
   }
-</div>
+  }
+</code>
