@@ -3,7 +3,8 @@ import { Component, inject } from "@angular/core";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucidePlus, lucideX } from "@ng-icons/lucide";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
-import { RestTabStateService } from "../../utils/rest-tab-state.service";
+import { RestTabStore } from "../../utils/rest-tab.store";
+import { methodColor } from "../../utils/rest.utils";
 
 @Component({
   selector: "reqquest-tab-bar",
@@ -14,5 +15,6 @@ import { RestTabStateService } from "../../utils/rest-tab-state.service";
   styleUrl: "./tab-bar.component.css",
 })
 export class TabBarComponent {
-  tabService = inject(RestTabStateService);
+  tabStore = inject(RestTabStore);
+  methodColor = methodColor;
 }

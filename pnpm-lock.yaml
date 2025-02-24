@@ -62,6 +62,9 @@ importers:
       '@ng-icons/lucide':
         specifier: ^30.2.0
         version: 30.2.0
+      '@ngrx/signals':
+        specifier: ^19.0.1
+        version: 19.0.1(@angular/core@19.1.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)
       '@spartan-ng/brain':
         specifier: 0.0.1-alpha.395
         version: 0.0.1-alpha.395(rriuyhfa263aintqwwyayxx464)
@@ -77,6 +80,9 @@ importers:
       '@trpc/server':
         specifier: ^10.45.2
         version: 10.45.2
+      axios:
+        specifier: ^1.7.9
+        version: 1.7.9
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -156,6 +162,9 @@ importers:
       '@eslint/js':
         specifier: ~8.57.1
         version: 8.57.1
+      '@ngrx/eslint-plugin':
+        specifier: ^19.0.1
+        version: 19.0.1(@typescript-eslint/utils@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.5.4))(eslint@9.20.1(jiti@2.4.2))(typescript-eslint@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.5.4))(typescript@5.5.4)
       '@nx/angular':
         specifier: ^20.4.2
         version: 20.4.2(@angular-devkit/build-angular@19.1.6(gtbzgos6yy6zxtxmdzsfe7l2re))(@angular-devkit/core@19.1.6(chokidar@4.0.3))(@angular-devkit/schematics@19.1.6(chokidar@4.0.3))(@babel/traverse@7.26.8)(@rspack/core@1.2.3(@swc/helpers@0.5.15))(@schematics/angular@19.1.6(chokidar@4.0.3))(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@swc/types@0.1.17)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.15))(@swc/helpers@0.5.15)(@types/node@18.16.9)(@zkochan/js-yaml@0.0.7)(eslint@9.20.1(jiti@2.4.2))(nx@20.3.2(@swc-node/register@1.9.2(@swc/core@1.5.29(@swc/helpers@0.5.15))(@swc/types@0.1.17)(typescript@5.5.4))(@swc/core@1.5.29(@swc/helpers@0.5.15)))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(rxjs@7.8.1)(typescript@5.5.4)
@@ -2413,6 +2422,23 @@ packages:
 
   '@ng-icons/lucide@30.2.0':
     resolution: {integrity: sha512-z8tqUMcgw2MXuJiUHRtdjs4LwUxrxV6xy3MsFBkK6LKCNen9v7FXfOjOPzFvR/HlOJ+ZmgJfxJ6cp5lhwvDM7Q==}
+
+  '@ngrx/eslint-plugin@19.0.1':
+    resolution: {integrity: sha512-cJjJ4oXPHaW9KTSyvujSGl+uvuA5ix5XNaMSxiaoNPRPlJ/EzSS6KKbY5XkxDPFj6hGLkO7vJPrCL27cGDjZ3Q==}
+    peerDependencies:
+      '@typescript-eslint/utils': ^8.0.0
+      eslint: ^8.57.0 || ^9.0.0
+      typescript: '*'
+      typescript-eslint: ^8.0.0
+
+  '@ngrx/signals@19.0.1':
+    resolution: {integrity: sha512-e9cGgF//tIyN1PKDDcBQkI0csxRcw4r9ezTtDzQpM2gPU5frD9JxaW/YU5gM02ZMl97bUMoI82fBtnDN0RtyWg==}
+    peerDependencies:
+      '@angular/core': ^19.0.0
+      rxjs: ^6.5.3 || ^7.4.0
+    peerDependenciesMeta:
+      rxjs:
+        optional: true
 
   '@ngtools/webpack@19.1.6':
     resolution: {integrity: sha512-36I/y4KIRWyE35OgZXzYnDCNQ2G3VB/2awj8L3VowDyTP9enJj6V044UGpCNiKOgYerubgMN3gcPIsOzg0pLpg==}
@@ -11857,6 +11883,22 @@ snapshots:
   '@ng-icons/lucide@30.2.0':
     dependencies:
       tslib: 2.8.1
+
+  '@ngrx/eslint-plugin@19.0.1(@typescript-eslint/utils@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.5.4))(eslint@9.20.1(jiti@2.4.2))(typescript-eslint@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.5.4))(typescript@5.5.4)':
+    dependencies:
+      '@typescript-eslint/utils': 8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.5.4)
+      eslint: 9.20.1(jiti@2.4.2)
+      semver: 7.7.1
+      strip-json-comments: 3.1.1
+      typescript: 5.5.4
+      typescript-eslint: 8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.5.4)
+
+  '@ngrx/signals@19.0.1(@angular/core@19.1.5(rxjs@7.8.1)(zone.js@0.15.0))(rxjs@7.8.1)':
+    dependencies:
+      '@angular/core': 19.1.5(rxjs@7.8.1)(zone.js@0.15.0)
+      tslib: 2.8.1
+    optionalDependencies:
+      rxjs: 7.8.1
 
   '@ngtools/webpack@19.1.6(@angular/compiler-cli@19.1.5(@angular/compiler@19.1.5(@angular/core@19.1.5(rxjs@7.8.1)(zone.js@0.15.0)))(typescript@5.5.4))(typescript@5.5.4)(webpack@5.97.1(@swc/core@1.5.29(@swc/helpers@0.5.15)))':
     dependencies:

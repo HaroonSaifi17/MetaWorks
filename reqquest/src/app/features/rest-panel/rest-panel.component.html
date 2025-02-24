@@ -1,14 +1,14 @@
 <div class="p-2">
   <form [formGroup]="requestForm" class="flex flex-wrap gap-2" (ngSubmit)="submitRequest()">
     <div class="flex flex-1">
-      <brn-select class="inline-block" [placeholder]="this.tabService.activeTab().method" formControlName="method">
+      <brn-select class="inline-block" [placeholder]="this.tabStore.activeTab().method" formControlName="method">
         <hlm-select-trigger
           class="[&>button]:!rounded-r-none [&>button]:!border-none [&>button]:!bg-muted-foreground/10">
           <hlm-select-value />
         </hlm-select-trigger>
         <hlm-select-content>
           @for (method of requestMethods; track method; let i = $index) {
-          <hlm-option [ngClass]="tabService.methodColor(method)" [value]="method" class="!pl-4 [&>*]:hidden">
+          <hlm-option [ngClass]="methodColor(method)" [value]="method" class="!pl-4 [&>*]:hidden">
             {{ method }}
           </hlm-option>
           }
@@ -30,11 +30,11 @@
   </form>
 </div>
 <code class="font-normal">
-  @if (!tabService.isLoading()) {
-  @if (tabService.error()!==null) {
-  <pre>{{ tabService.error()    }}</pre>
+  @if (!tabStore.activeTab().isLoading) {
+  @if (tabStore.activeTab().error!==null) {
+  <pre>{{ tabStore.activeTab().error | json    }}</pre>
   } @else {
-  <pre>{{ tabService.response() | json }}</pre>
+  <pre>{{ tabStore.activeTab().response | json }}</pre>
   }
   }
 </code>

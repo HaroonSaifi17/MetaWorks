@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, effect, inject, OnInit } from "@angular/core";
 import { BrnSelectImports } from "@spartan-ng/brain/select";
 import { HlmSelectImports } from "@spartan-ng/ui-select-helm";
 import { CommonModule } from "@angular/common";
@@ -12,11 +12,9 @@ import { HlmInputDirective } from "@spartan-ng/ui-input-helm";
 import { HlmButtonDirective } from "@spartan-ng/ui-button-helm";
 import { NgIcon, provideIcons } from "@ng-icons/core";
 import { lucideSave } from "@ng-icons/lucide";
-import {
-  RestTabStateService,
-  RequestMethod,
-} from "./utils/rest-tab-state.service";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { RestTabStore } from "./utils/rest-tab.store";
+import { HttpMethod } from "./utils/rest.interface";
+import { methodColor } from "./utils/rest.utils";
 
 @Component({
   selector: "reqquest-rest-panel",
@@ -36,9 +34,10 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   styleUrl: "./rest-panel.component.css",
 })
 export class RestPanelComponent implements OnInit {
-  tabService = inject(RestTabStateService);
+  tabStore = inject(RestTabStore);
   fb = inject(NonNullableFormBuilder);
-  requestMethods: RequestMethod[] = [
+  methodColor = methodColor;
+  requestMethods: HttpMethod[] = [
     "GET",
     "POST",
     "PUT",
@@ -51,36 +50,34 @@ export class RestPanelComponent implements OnInit {
   ];
 
   constructor() {
-    this.tabService.tabChangeSubject
-      .pipe(takeUntilDestroyed())
-      .subscribe(() => {
-        this.requestForm.setValue(
-          {
-            method: this.tabService.activeTab().method,
-            url: this.tabService.activeTab().url,
-          },
-          { emitEvent: false },
-        );
-      });
+    effect(() => {
+      this.requestForm.setValue(
+        {
+          method: this.tabStore.activeTab().method,
+          url: this.tabStore.activeTab().url,
+        },
+        { emitEvent: false },
+      );
+    });
   }
 
   ngOnInit() {
     this.requestForm.valueChanges.subscribe((value) => {
-      this.tabService.modifyTab(value);
+      this.tabStore.updateTab(value);
     });
   }
 
   requestForm = this.fb.group({
-    method: [this.tabService.activeTab().method || "GET", Validators.required],
+    method: [this.tabStore.activeTab().method || "GET", Validators.required],
     url: [
-      this.tabService.activeTab().url || "",
+      this.tabStore.activeTab().url || "",
       [Validators.required, Validators.pattern(/^https?:\/\/.+/)],
     ],
   });
 
   submitRequest(): void {
     if (this.requestForm.valid) {
-      this.tabService.submitRequest();
+      this.tabStore.makeRequest();
     }
   }
 }
