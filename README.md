@@ -1,45 +1,42 @@
-# MetaWorks
+# ReqQuest
 
-MetaWorks is a monorepo for personal projects built using the **Spartan Stack**, leveraging modern web technologies for high-performance and scalable applications.
+ReqQuest is an Angular-based API workbench for testing REST, GraphQL, and realtime connections from one UI.
 
-## 🚀 Projects
+## Features
 
-- **ReqQuest** – A Hoppscotch-inspired API testing tool using Analog, tRPC, and Supabase.
+- REST request builder with params, headers, auth, and environment variables
+- GraphQL request editor and response viewer
+- Realtime page with working WebSocket connect/send/receive flow
+- SSE stream support (receive-only)
+- Workspace settings for timeout, environments, and UI preferences
 
-## 🛠️ Tech Stack
+## Quick Start
 
-- **Frontend:** Angular + Analog + Spartan UI  
-- **Backend:** tRPC + Supabase  
-- **State Management:** RxJS + Signals  
-- **Authentication:** Supabase Auth  
-- **Monorepo Management:** Nx  
+1. Install dependencies:
 
-## 📦 Setup & Development
-
-```sh
-git clone https://github.com/HaroonSaifi17/MetaWorks.git
-cd MetaWorks
+```bash
 npm install
 ```
 
-### Run Development Server
-```sh
-npx nx serve app-name
+2. Start development server:
+
+```bash
+npm start
 ```
 
-### Run All Affected Tests
-```sh
-npx nx affected:test
-```
+3. Open:
 
-### Build for Production
-```sh
-npx nx build app-name
-```
+`http://localhost:5173`
 
-## 🤝 Contributing
+## Scripts
 
-This is a personal project space, but discussions and suggestions are welcome!
+- `npm start` - run dev server
+- `npm run build` - production build
+- `npm run test` - run tests (Vitest)
+- `npm run preview` - preview built app
 
----
+## Realtime Notes
 
+- WebSocket: fully supported (`ws://` and `wss://`)
+- SSE: supported for receiving events
+- Socket.IO and MQTT: UI exists, transport layer not implemented yet

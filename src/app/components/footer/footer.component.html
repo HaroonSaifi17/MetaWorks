@@ -1,0 +1,83 @@
+<footer
+  class="flex h-11 shrink-0 items-center justify-between border-t bg-background/95 px-2 text-sm backdrop-blur supports-[backdrop-filter]:bg-background/75 [&>div]:flex [&>div]:items-center [&>div]:gap-1 [&>div>button]:h-8 [&>div>button]:px-2 [&>div>button]:text-muted-foreground"
+>
+  <div>
+    <button
+      (click)="toggleSidebar()"
+      [hlmTooltip]="sidebarExpanded ? 'Collapse sidebar' : 'Expand sidebar'"
+      variant="ghost"
+      hlmBtn
+    >
+      <ng-icon
+        [name]="sidebarExpanded ? 'lucidePanelLeft' : 'lucidePanelLeftOpen'"
+        hlm
+        size="20px"
+      />
+    </button>
+    <button
+      hlmTooltip="Interceptor"
+      variant="ghost"
+      hlmBtn
+      [class.text-emerald-500]="interceptorEnabled"
+      (click)="toggleInterceptor()"
+    >
+      <ng-icon name="lucideShieldCheck" hlm size="20px" />
+    </button>
+  </div>
+  <div>
+    <button
+      hlmTooltip="Help and support"
+      variant="ghost"
+      hlmBtn
+      class="hover:no-underline"
+      (click)="openShortcutsHelp()"
+    >
+      <ng-icon name="lucideHelpCircle" class="mr-2" hlm size="20px" />
+      Help & Support
+    </button>
+    <button
+      hlmTooltip="Keyboard shortcuts"
+      variant="ghost"
+      hlmBtn
+      (click)="openShortcutsHelp()"
+    >
+      <ng-icon name="bootstrapLightningCharge" hlm size="20px" />
+    </button>
+    <button
+      [hlmTooltip]="
+        restLayout === 'vertical'
+          ? 'Switch to horizontal layout'
+          : 'Switch to vertical layout'
+      "
+      variant="ghost"
+      hlmBtn
+      (click)="toggleRestLayout()"
+    >
+      <ng-icon
+        [name]="
+          restLayout === 'vertical'
+            ? 'lucideFlipHorizontal'
+            : 'lucideFlipVertical'
+        "
+        hlm
+        size="20px"
+      />
+    </button>
+    <button
+      [hlmTooltip]="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+      variant="ghost"
+      hlmBtn
+      (click)="toggleDarkMode()"
+    >
+      <ng-icon [name]="darkMode ? 'lucideSun' : 'lucideMoon'" hlm size="20px" />
+    </button>
+    <button
+      hlmTooltip="About this app"
+      variant="ghost"
+      hlmBtn
+      (click)="showAbout()"
+    >
+      <ng-icon name="lucideInfo" hlm size="20px" />
+    </button>
+  </div>
+</footer>

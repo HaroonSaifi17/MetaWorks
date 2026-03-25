@@ -1,0 +1,237 @@
+<header
+  class="flex h-[var(--layout-header-height)] w-full items-center gap-2 border-b border-border bg-background px-3 md:px-4"
+>
+  <div class="min-w-0 flex-1">
+    <a
+      hlmBtn
+      routerLink="/"
+      variant="link"
+      class="cursor-pointer px-0 text-sm font-semibold uppercase md:text-base"
+    >
+      ReqQuest
+      <span class="sr-only">Home</span>
+    </a>
+  </div>
+
+  <div class="flex min-w-0 flex-1 justify-center gap-2">
+    <button
+      hlmBtn
+      variant="outline"
+      size="sm"
+      class="h-8 w-full max-w-64 justify-between gap-2 overflow-hidden max-sm:max-w-none"
+      type="button"
+      aria-label="Open search"
+      (click)="openSearch()"
+    >
+      <div class="flex items-center gap-1">
+        <ng-icon hlm size="xs" name="lucideSearch" aria-hidden="true" />
+        <span>Search</span>
+      </div>
+      <div class="flex gap-1 font-normal max-sm:hidden">
+        <kbd class="rounded-sm border border-muted bg-background px-1"
+          >Ctrl</kbd
+        >
+        <kbd class="rounded-sm border border-muted bg-background px-1">K</kbd>
+      </div>
+    </button>
+    <button
+      hlmBtn
+      hlmTooltip="Support"
+      variant="ghost"
+      class="h-8 p-2 max-sm:hidden"
+      size="sm"
+      type="button"
+      aria-label="Support"
+      (click)="onSupportClick()"
+    >
+      <ng-icon hlm size="sm" name="lucideLifeBuoy" aria-hidden="true" />
+    </button>
+  </div>
+
+  @if (user(); as user) {
+    <div class="flex min-w-0 flex-1 items-center justify-end gap-2">
+      <button
+        hlmBtn
+        hlmTooltip="Invite people to this workspace"
+        size="sm"
+        variant="outline"
+        class="h-8 gap-2 border-emerald-500 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 hover:text-emerald-500 max-sm:hidden"
+        aria-label="Invite people"
+        (click)="onInviteClick()"
+      >
+        <ng-icon hlm size="sm" name="lucideUserPlus" aria-hidden="true" />
+      </button>
+      <button
+        hlmBtn
+        hlmTooltip="Rename workspace"
+        size="sm"
+        variant="outline"
+        class="h-8 gap-2 border-blue-500 bg-blue-500/10 text-blue-500 hover:bg-blue-500/20 hover:text-blue-500 max-sm:hidden"
+        aria-label="Rename workspace"
+        (click)="onWorkspaceClick()"
+      >
+        <ng-icon hlm size="sm" name="heroCloudArrowUp" aria-hidden="true" />
+        <span class="max-w-36 truncate max-md:hidden">{{ workspaceName() }}</span>
+      </button>
+
+      <hlm-avatar
+        [hlmTooltip]="user.user_metadata['full_name']"
+        [hlmDropdownMenuTrigger]="menu"
+        class="cursor-pointer"
+      >
+        <img
+          [src]="user.user_metadata['avatar_url']"
+          alt="User avatar"
+          hlmAvatarImage
+          (error)="handleImageError($event)"
+        />
+        <span class="bg-secondary uppercase" hlmAvatarFallback>
+          {{ user.user_metadata["full_name"] | slice: 0 : 2 }}
+        </span>
+      </hlm-avatar>
+
+      <hlm-dropdown-menu #menu>
+        <hlm-dropdown-menu-label class="px-4 py-2">
+          <div class="font-medium">{{ user.user_metadata["full_name"] }}</div>
+          <div class="text-xs text-muted-foreground">
+            {{ user.user_metadata["email"] }}
+          </div>
+        </hlm-dropdown-menu-label>
+        <hlm-dropdown-menu-separator />
+        <hlm-dropdown-menu-group
+          class="[&>button]:cursor-pointer [&>button]:gap-2"
+        >
+          <button hlmDropdownMenuItem role="menuitem" class="hidden"></button>
+          <button hlmDropdownMenuItem role="menuitem" (click)="goToProfile()">
+            <ng-icon name="lucideUser" aria-hidden="true" />
+            Profile
+            <hlm-dropdown-menu-shortcut>P</hlm-dropdown-menu-shortcut>
+          </button>
+          <button hlmDropdownMenuItem role="menuitem" (click)="goToSettings()">
+            <ng-icon name="lucideSettings" aria-hidden="true" />
+            Settings
+            <hlm-dropdown-menu-shortcut>S</hlm-dropdown-menu-shortcut>
+          </button>
+          <button
+            hlmDropdownMenuItem
+            role="menuitem"
+            (click)="authService.logout()"
+          >
+            <ng-icon name="lucideLogOut" aria-hidden="true" />
+            Logout
+            <hlm-dropdown-menu-shortcut>Q</hlm-dropdown-menu-shortcut>
+          </button>
+        </hlm-dropdown-menu-group>
+      </hlm-dropdown-menu>
+    </div>
+  } @else {
+    <div class="flex flex-1 justify-end">
+      <hlm-dialog class="flex">
+        <button
+          hlmBtn
+          hlmDialogTrigger
+          size="sm"
+          variant="outline"
+          class="mr-2 h-8 gap-2 text-nowrap border-emerald-500 bg-emerald-500/10 text-emerald-500 hover:bg-emerald-500/20 hover:text-emerald-500 max-sm:hidden"
+          aria-label="Create workspace"
+        >
+          <ng-icon hlm size="sm" name="heroCloudArrowUp" aria-hidden="true" />
+          Create Workspace
+        </button>
+        <button
+          hlmDialogTrigger
+          hlmBtn
+          size="sm"
+          variant="secondary"
+          class="h-8 whitespace-nowrap"
+        >
+          Login
+        </button>
+        <reqquest-auth [formTrigger]="formTrigger"></reqquest-auth>
+      </hlm-dialog>
+    </div>
+  }
+</header>
+
+@if (isRenameWorkspaceOpen()) {
+  <div
+    class="fixed inset-0 z-50 flex items-start justify-center bg-black/30 px-4 pt-24"
+    (click)="cancelWorkspaceRename()"
+  >
+    <section
+      class="max-h-[80dvh] w-full max-w-md overflow-y-auto rounded-md border bg-background shadow-xl"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="border-b p-3">
+        <h2 class="text-sm font-semibold">Rename workspace</h2>
+      </header>
+      <div class="p-3">
+        <input
+          hlmInput
+          type="text"
+          [value]="workspaceDraftName()"
+          placeholder="Workspace name"
+          (input)="workspaceDraftName.set($any($event.target).value)"
+          (keydown.enter)="saveWorkspaceRename()"
+          (keydown.escape)="cancelWorkspaceRename()"
+        />
+      </div>
+      <footer class="flex justify-end gap-2 border-t p-3">
+        <button
+          type="button"
+          hlmBtn
+          variant="outline"
+          (click)="cancelWorkspaceRename()"
+        >
+          Cancel
+        </button>
+        <button type="button" hlmBtn (click)="saveWorkspaceRename()">
+          Save
+        </button>
+      </footer>
+    </section>
+  </div>
+}
+
+@if (isSearchOpen()) {
+  <div
+    class="fixed inset-0 z-50 flex items-start justify-center bg-black/30 px-4 pt-24"
+    (click)="closeSearch()"
+  >
+    <section
+      class="max-h-[80dvh] w-full max-w-xl overflow-hidden rounded-md border bg-background shadow-xl"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="border-b p-3">
+        <input
+          type="text"
+          hlmInput
+          placeholder="Search pages..."
+          [value]="searchTerm()"
+          (keydown.escape)="closeSearch()"
+          (input)="onSearchInput($event)"
+        />
+      </div>
+
+      <div class="max-h-80 overflow-y-auto p-2">
+        @if (filteredRoutes.length === 0) {
+          <p class="p-2 text-sm text-muted-foreground">
+            No matching pages found.
+          </p>
+        } @else {
+          @for (route of filteredRoutes; track route.path) {
+            <button
+              type="button"
+              hlmBtn
+              variant="ghost"
+              class="mb-1 flex w-full justify-start"
+              (click)="jumpToRoute(route.path)"
+            >
+              {{ route.label }}
+            </button>
+          }
+        }
+      </div>
+    </section>
+  </div>
+}

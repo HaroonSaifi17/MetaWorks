@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>reqquest</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      (() => {
+        const storageKey = "reqquest.ui.preferences.v1";
+        const defaultDarkMode = true;
+
+        let isDarkMode = defaultDarkMode;
+        try {
+          const rawPreferences = localStorage.getItem(storageKey);
+          if (rawPreferences) {
+            const parsedPreferences = JSON.parse(rawPreferences);
+            if (typeof parsedPreferences?.darkMode === "boolean") {
+              isDarkMode = parsedPreferences.darkMode;
+            }
+          }
+        } catch {
+          isDarkMode = defaultDarkMode;
+        }
+
+        document.documentElement.classList.toggle("dark", isDarkMode);
+        document.documentElement.dataset.theme = isDarkMode ? "dark" : "light";
+        document.documentElement.style.colorScheme = isDarkMode
+          ? "dark"
+          : "light";
+      })();
+    </script>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <reqquest-root></reqquest-root>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

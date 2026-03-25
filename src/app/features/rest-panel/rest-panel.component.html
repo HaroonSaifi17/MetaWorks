@@ -1,0 +1,73 @@
+<section class="flex h-full min-h-0 flex-col gap-2 p-2">
+  <div class="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto">
+    <reqquest-request-toolbar
+      [form]="requestForm"
+      [isLoading]="activeTab().isLoading"
+      [methods]="requestMethods"
+      [methodPlaceholder]="activeTab().method"
+      (submitRequest)="submitRequest()"
+      (cancelRequest)="cancelRequest()"
+      (saveRequest)="saveRequestSnapshot()"
+      (duplicateTab)="duplicateActiveTab()"
+      (clearTab)="clearActiveTab()"
+      (copyCurl)="copyCurlCommand()"
+    />
+
+    @if (validationMessage(); as message) {
+      <p class="text-sm font-medium text-destructive">{{ message }}</p>
+    }
+
+    <div
+      class="grid gap-2"
+      [ngClass]="
+        uiPreferences.restLayout() === 'vertical'
+          ? 'grid-cols-1 grid-rows-2 min-h-0 flex-1'
+          : 'grid-cols-1 auto-rows-[minmax(400px,1fr)] lg:grid-cols-2 lg:grid-rows-1 lg:min-h-0 lg:flex-1'
+      "
+    >
+      <!-- Request Panel -->
+      <reqquest-request-options
+        [activeTab]="activeTab()"
+        [unresolvedVariables]="unresolvedVariables()"
+        [testResultSummary]="testResultSummary()"
+        [canSendBody]="canSendBody()"
+        [activeRequestTab]="activeRequestTab()"
+        (activeRequestTabChange)="selectRequestTab($event)"
+        (addParam)="addParam()"
+        (updateParamKey)="updateParamKey($event.index, $event.value)"
+        (updateParamValue)="updateParamValue($event.index, $event.value)"
+        (toggleParam)="toggleParam($event.index, $event.enabled)"
+        (removeParam)="removeParam($event)"
+        (loadExampleParams)="applyUsersExample()"
+        (addHeader)="addHeader()"
+        (updateHeaderKey)="updateHeaderKey($event.index, $event.value)"
+        (updateHeaderValue)="updateHeaderValue($event.index, $event.value)"
+        (toggleHeader)="toggleHeader($event.index, $event.enabled)"
+        (removeHeader)="removeHeader($event)"
+        (updateAuthType)="selectAuthType($event)"
+        (updateBearerToken)="updateBearerToken($event)"
+        (updateBasicUsername)="updateBasicUsername($event)"
+        (updateBasicPassword)="updateBasicPassword($event)"
+        (updateApiKeyKey)="updateApiKeyKey($event)"
+        (updateApiKeyValue)="updateApiKeyValue($event)"
+        (updateApiKeyIn)="updateApiKeyIn($event)"
+        (updateBody)="updateBody($event)"
+        (loadExampleBody)="applyCreatePostExample()"
+        (updatePreScript)="updatePreRequestScript($event)"
+        (loadExamplePreScript)="applyPreRequestScriptExample()"
+        (updateTestScript)="updateTestScript($event)"
+        (loadExampleTestScript)="applyTestScriptExample()"
+      />
+
+      <!-- Response Panel -->
+      <reqquest-response-viewer
+        [response]="activeTab().response"
+        [isLoading]="activeTab().isLoading"
+        [error]="activeTab().error"
+        [activeSection]="responseSection()"
+        (sectionChange)="selectResponseSection($event)"
+        (copyBody)="copyResponseBody()"
+      />
+    </div>
+  </div>
+</section>
